@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KI-Team-Audit · Mindshift AI</title>
+<meta name="description" content="3-Minuten-Self-Assessment zur KI-Reife Ihres Teams. Mit SHIFT-Verortung und konkreten Handlungsempfehlungen." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:        #C1A355;
+    --gold-light:  #D4BC7B;
+    --gold-pale:   #EDE3C8;
+    --gold-dark:   #9E8440;
+    --gold-glow:   rgba(193,163,85,.18);
+    --navy:        #0A1628;
+    --navy-mid:    #132035;
+    --navy-light:  #1B2D47;
+    --slate:       #1A3A5C;
+    --white:       #FFFFFF;
+    --off-white:   #F9F8F5;
+    --cream:       #F4F0E7;
+    --stone-50:    #EDEAE3;
+    --stone-100:   #DEDAD0;
+    --stone-300:   #B0AA9D;
+    --stone-500:   #7A756A;
+    --stone-700:   #4A463D;
+    --ink:         #1E1C18;
+    --red-soft:    #C45B4A;
+    --yellow-soft: #C99A3D;
+    --green-soft:  #5A9E6F;
+    --ff-display:  'Playfair Display', Georgia, serif;
+    --ff-body:     'Inter', -apple-system, sans-serif;
+    --ease:        cubic-bezier(.4,0,.2,1);
+    --ease-spring: cubic-bezier(.34,1.56,.64,1);
+    --shadow-s:    0 2px 8px rgba(10,22,40,.05);
+    --shadow-m:    0 8px 32px rgba(10,22,40,.08);
+    --shadow-l:    0 24px 64px rgba(10,22,40,.12);
+    --shadow-gold: 0 8px 32px rgba(193,163,85,.22);
+    --radius:      14px;
+    --radius-lg:   22px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--ff-body);
+    background: var(--off-white);
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 700; color: var(--navy); line-height: 1.15; margin: 0; }
+  h1 { font-size: clamp(1.8rem, 3.2vw, 2.8rem); }
+  h2 { font-size: clamp(1.5rem, 2.5vw, 2rem); }
+  h3 { font-size: 1.2rem; }
+  p { margin: 0; color: var(--stone-700); }
+  button { font-family: var(--ff-body); cursor: pointer; border: none; }
+  .shell {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  @media (max-width: 640px) { .shell { padding: 24px 16px 64px; } }
+
+  .brand-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+    font-size: 1.1rem;
+  }
+  .brand-header .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); }
+  .brand-header .tag { font-family: var(--ff-body); font-weight: 400; font-size: 0.85rem; color: var(--stone-500); margin-left: auto; }
+
+  .progress {
+    height: 3px;
+    background: var(--stone-100);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    transition: width 0.5s var(--ease);
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--stone-100);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: var(--shadow-s);
+  }
+  @media (max-width: 640px) { .card { padding: 24px; } }
+
+  .kicker {
+    font-family: var(--ff-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold-dark);
+    margin-bottom: 16px;
+  }
+
+  .question {
+    font-family: var(--ff-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.35;
+    margin-bottom: 20px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: var(--white);
+    border: 1.5px solid var(--stone-100);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+    text-align: left;
+    width: 100%;
+    font-size: 0.98rem;
+    color: var(--ink);
+  }
+  .option:hover { border-color: var(--gold-light); background: var(--cream); }
+  .option.selected {
+    border-color: var(--gold);
+    background: var(--cream);
+    box-shadow: var(--shadow-gold);
+  }
+  .option .dot-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--stone-300);
+    flex-shrink: 0;
+    transition: all 0.2s var(--ease);
+  }
+  .option.selected .dot-box {
+    border-color: var(--gold);
+    background: var(--gold);
+    box-shadow: inset 0 0 0 3px var(--white);
+  }
+
+  .likert-row {
+    margin-bottom: 28px;
+  }
+  .likert-q {
+    font-size: 1.02rem;
+    color: var(--navy);
+    font-weight: 500;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .likert-scale {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .likert-btn {
+    padding: 12px 4px;
+    border: 1.5px solid var(--stone-100);
+    background: var(--white);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--stone-500);
+    transition: all 0.15s var(--ease);
+    cursor: pointer;
+  }
+  .likert-btn:hover { border-color: var(--gold-light); color: var(--navy); }
+  .likert-btn.selected {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+  }
+  .likert-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 0.72rem;
+    color: var(--stone-500);
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+    gap: 12px;
+  }
+  .btn {
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s var(--ease);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: var(--white);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--navy-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-m);
+  }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-gold {
+    background: var(--gold);
+    color: var(--navy);
+  }
+  .btn-gold:hover { background: var(--gold-light); box-shadow: var(--shadow-gold); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--stone-500);
+  }
+  .btn-ghost:hover { color: var(--navy); }
+
+  .hero-text {
+    font-family: var(--ff-display);
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero-text em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--stone-500);
+    margin-bottom: 32px;
+    max-width: 560px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: var(--stone-500);
+  }
+  .hero-meta span strong { color: var(--navy); font-weight: 600; }
+
+  /* Results styles */
+  .shift-track {
+    position: relative;
+    margin: 40px 0 48px;
+    padding: 0 12px;
+  }
+  .shift-rail {
+    position: relative;
+    height: 2px;
+    background: var(--stone-100);
+    margin: 36px 0;
+  }
+  .shift-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    transition: width 0.8s var(--ease);
+  }
+  .shift-phase {
+    position: absolute;
+    transform: translateX(-50%);
+    top: -36px;
+    text-align: center;
+    width: 110px;
+  }
+  .shift-phase .phase-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--stone-100);
+    border: 2px solid var(--white);
+    margin: 0 auto;
+    transition: all 0.4s var(--ease);
+  }
+  .shift-phase.passed .phase-dot { background: var(--gold); }
+  .shift-phase.current .phase-dot {
+    background: var(--navy);
+    width: 22px;
+    height: 22px;
+    margin-top: -4px;
+    box-shadow: 0 0 0 6px rgba(10,22,40,0.08);
+  }
+  .shift-phase .phase-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--stone-500);
+    margin-top: 12px;
+  }
+  .shift-phase.current .phase-label { color: var(--navy); font-weight: 700; }
+  .breakpoint-callout {
+    background: var(--cream);
+    border: 1px solid var(--gold-pale);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+  .breakpoint-callout .kicker { color: var(--gold-dark); margin-bottom: 8px; }
+  .breakpoint-callout h3 { margin-bottom: 6px; }
+
+  .dim-bar-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 56px 100px;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--stone-50);
+    font-size: 0.95rem;
+  }
+  @media (max-width: 640px) {
+    .dim-bar-row { grid-template-columns: 1fr 48px; grid-template-rows: auto auto; font-size: 0.9rem; }
+    .dim-bar-row .bar-track { grid-column: 1 / -1; }
+    .dim-bar-row .zone-label { grid-column: 1 / -1; margin-top: 4px; }
+  }
+  .dim-label { font-weight: 500; color: var(--navy); }
+  .bar-track {
+    height: 10px;
+    background: var(--stone-100);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .bar-fill { height: 100%; border-radius: 5px; transition: width 0.8s var(--ease); }
+  .bar-fill.green { background: var(--green-soft); }
+  .bar-fill.yellow { background: var(--yellow-soft); }
+  .bar-fill.red { background: var(--red-soft); }
+  .dim-score { font-weight: 700; text-align: right; color: var(--navy); }
+  .zone-label { font-size: 0.78rem; font-weight: 600; }
+  .zone-label.green { color: var(--green-soft); }
+  .zone-label.yellow { color: var(--yellow-soft); }
+  .zone-label.red { color: var(--red-soft); }
+
+  .recommendation {
+    padding: 28px;
+    border: 1px solid var(--stone-100);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    background: var(--white);
+  }
+  .recommendation.primary {
+    border-color: var(--gold);
+    box-shadow: var(--shadow-gold);
+  }
+  .rec-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .rec-number {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--gold-dark);
+  }
+  .rec-title {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--navy);
+    flex: 1;
+    min-width: 240px;
+  }
+  .rec-meta {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--stone-500);
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .rec-meta span { display: flex; align-items: center; gap: 6px; }
+  .rec-body { margin-bottom: 16px; }
+  .rec-steps { list-style: none; padding: 0; margin: 0 0 16px; }
+  .rec-steps li {
+    padding: 10px 0 10px 28px;
+    position: relative;
+    color: var(--ink);
+    font-size: 0.96rem;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--stone-50);
+  }
+  .rec-steps li:last-child { border-bottom: none; }
+  .rec-steps li::before {
+    content: attr(data-step);
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--gold-dark);
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .rec-why {
+    font-size: 0.88rem;
+    color: var(--stone-500);
+    border-left: 2px solid var(--gold);
+    padding: 4px 0 4px 14px;
+    font-style: italic;
+  }
+  .rec-pitfall {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--stone-700);
+    background: var(--off-white);
+    padding: 10px 14px;
+    border-radius: 8px;
+  }
+  .rec-pitfall strong { color: var(--red-soft); font-weight: 600; }
+
+  .time-plan {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px 20px;
+    margin: 8px 0;
+    align-items: center;
+  }
+  @media (max-width: 640px) { .time-plan { grid-template-columns: 1fr; gap: 4px 0; padding: 12px 0; border-bottom: 1px solid var(--stone-50); } }
+  .time-plan-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold-dark);
+  }
+  .time-plan-text { color: var(--ink); }
+
+  .reflection {
+    background: var(--navy);
+    color: var(--white);
+    padding: 32px 28px;
+    border-radius: var(--radius-lg);
+    margin: 32px 0;
+  }
+  .reflection .kicker { color: var(--gold-light); }
+  .reflection p { font-family: var(--ff-display); font-style: italic; font-size: 1.15rem; color: var(--white); line-height: 1.5; }
+
+  .cta-box {
+    background: linear-gradient(165deg, var(--navy), var(--navy-mid));
+    color: var(--white);
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    margin: 32px 0;
+    text-align: left;
+  }
+  .cta-box .kicker { color: var(--gold); }
+  .cta-box h3 { color: var(--white); margin-bottom: 12px; }
+  .cta-box p { color: rgba(255,255,255,0.78); margin-bottom: 20px; }
+  .cta-note { font-size: 0.85rem; color: var(--stone-300); margin-top: 12px; }
+
+  .section-title {
+    font-family: var(--ff-body);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin: 40px 0 16px;
+  }
+
+  .variant-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 640px) { .variant-grid { grid-template-columns: 1fr; } }
+  .variant-card {
+    padding: 32px 28px;
+    border: 1.5px solid var(--stone-100);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+    text-align: left;
+    background: var(--white);
+  }
+  .variant-card:hover { border-color: var(--gold); box-shadow: var(--shadow-m); transform: translateY(-2px); }
+  .variant-card h3 { margin-bottom: 10px; }
+  .variant-card p { font-size: 0.92rem; }
+  .variant-card .icon { font-size: 1.6rem; margin-bottom: 12px; }
+
+  .leitfragen {
+    background: var(--cream);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin: 24px 0;
+  }
+  .leitfragen h4 { font-family: var(--ff-display); font-weight: 700; color: var(--navy); margin-bottom: 14px; font-size: 1.1rem; }
+  .leitfragen ol { margin: 0; padding-left: 24px; }
+  .leitfragen li { margin-bottom: 10px; color: var(--ink); line-height: 1.5; }
+
+  .footer-meta {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--stone-100);
+    font-size: 0.8rem;
+    color: var(--stone-500);
+    text-align: center;
+  }
+
+  /* Fade transitions */
+  .fade-in { animation: fadeIn 0.4s var(--ease) both; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client"
+  }
+}
+</script>
+
+<script type="module">
+import React, { useState, useMemo } from 'react';
+import { createRoot } from 'react-dom/client';
+
+const h = React.createElement;
+
+/* ===================== DATA ===================== */
+
+const CONTEXT_Q = {
+  C1: {
+    label: 'Wie tief ist KI aktuell in die täglichen Arbeitsprozesse Ihres Teams integriert?',
+    options: [
+      { value: 'kein-einsatz', label: 'Kein Einsatz – KI spielt in unseren Abläufen noch keine Rolle' },
+      { value: 'explorativ',   label: 'Einzelne experimentieren – informelle Nutzung von Standard-Tools' },
+      { value: 'etabliert',    label: 'Feste Routine-Integration – KI ist für bestimmte Aufgaben etabliert' },
+      { value: 'integriert',   label: 'Tiefe Integration – spezialisierte KI-Lösungen in Kernprozessen' },
+    ],
+  },
+  C2: {
+    label: 'Wofür wird KI in Ihrem Team vorrangig eingesetzt?',
+    options: [
+      { value: 'unklar',       label: 'Noch unklar oder zu früh' },
+      { value: 'automation',   label: 'Routineentlastung – Texte, Mails, Recherche, Zusammenfassungen' },
+      { value: 'augmentation', label: 'Qualitätsverbesserung – Analysen, Entscheidungen, Ideenfindung' },
+      { value: 'beides',       label: 'Sowohl als auch' },
+    ],
+  },
+  C3: {
+    label: 'Wie offen ist der Umgang mit KI im Team geregelt?',
+    options: [
+      { value: 'fehlend',    label: 'Keine Regelung – wird nicht thematisiert' },
+      { value: 'restriktiv', label: 'Restriktiv – strenge Vorgaben, minimale Nutzung' },
+      { value: 'informell',  label: 'Toleriert, aber informell – ohne klare Leitplanken' },
+      { value: 'geregelt',   label: 'Offen und geregelt – klare Richtlinien, transparent geteilt' },
+    ],
+  },
+  C4: {
+    label: 'Wie erwerben Ihre Mitarbeitenden KI-Kompetenz?',
+    options: [
+      { value: 'keine',          label: 'Gar nicht – bisher kein Fokus auf KI-Kompetenzen' },
+      { value: 'autodidaktisch', label: 'Autodidaktisch – Trial-and-Error im Arbeitsalltag' },
+      { value: 'punktuell',      label: 'Punktuelle Impulse – gelegentliche Webinare oder Input' },
+      { value: 'systematisch',   label: 'Systematisch – gezieltes Training in Methodik und Bewertung' },
+    ],
+  },
+};
+
+const DIMENSIONS = [
+  // Block A · Mindset-Risiken
+  {
+    id: 'sinnverlust', label: 'Sinnverlust', block: 'A',
+    intro: 'Wie nehmen Sie bei Ihrem Team das Thema "Sinn und Wert der eigenen Arbeit" wahr?',
+    items: [
+      { id: 'S1', text: 'Meine Mitarbeitenden haben das Gefühl, dass ihr persönlicher Beitrag durch KI an Wert verliert.' },
+      { id: 'S2', text: 'Einige im Team wirken zunehmend wie bloße Systembediener und geben fachliche Verantwortung an KI ab.' },
+      { id: 'S3', text: 'Seit der KI-Nutzung machen früher engagierte Teammitglieder häufiger nur noch Dienst nach Vorschrift.' },
+    ],
+  },
+  {
+    id: 'kompetenzangst', label: 'Kompetenzangst', block: 'A',
+    intro: 'Wie zeigen sich im Team Überforderung, Unsicherheit oder Angst vor KI?',
+    items: [
+      { id: 'K1', text: 'Meine Mitarbeitenden fühlen sich von der KI-Bedienung überfordert und brauchen sehr lange, um diese zu verstehen.' },
+      { id: 'K2', text: 'Erfahrene Teammitglieder äußern die Sorge, dass ihr Expertenwissen durch KI entwertet und sie ersetzbar werden.' },
+      { id: 'K3', text: 'Mitarbeitende geben beim Ausprobieren neuer KI-Tools oft schnell frustriert auf oder vermeiden die Nutzung gänzlich.' },
+    ],
+  },
+  {
+    id: 'fuehrungsvakuum', label: 'Führungsvakuum', block: 'A',
+    intro: 'Welche sichtbaren Folgen haben Führungs-Entscheidungen (oder deren Fehlen) auf die KI-Nutzung?',
+    items: [
+      { id: 'F1', text: 'In Meetings herrscht auffälliges Schweigen, wenn es um offene Fragen oder Bedenken zu KI-Tools geht.' },
+      { id: 'F2', text: 'Das Team ist spürbar unsicher, welche Priorität das Erlernen von KI gegenüber dem regulären Tagesgeschäft hat.' },
+      { id: 'F3', text: 'Mein Team nutzt KI-Tools oft nur oberflächlich als lästige Pflicht, ohne sie wertschöpfend in Prozesse zu integrieren.' },
+    ],
+  },
+  {
+    id: 'tempostress', label: 'Tempo-Stress', block: 'A',
+    intro: 'Wie spürt Ihr Team die Geschwindigkeit der KI-Veränderung?',
+    items: [
+      { id: 'T1', text: 'Bei neuen KI-Ankündigungen reagiert mein Team mittlerweile eher genervt und zynisch als neugierig.' },
+      { id: 'T2', text: 'Bevor das Team ein KI-Tool im Alltag wirklich beherrscht, wird bereits das nächste Update eingeführt.' },
+      { id: 'T3', text: 'Mitarbeitende äußern spürbar das Gefühl, von der rasanten Geschwindigkeit der KI-Entwicklungen förmlich überrollt zu werden.' },
+    ],
+  },
+  // Deep-Check only from here
+  {
+    id: 'entscheidungsangst', label: 'Entscheidungsangst', block: 'A', deepOnly: true,
+    intro: 'Wie entscheidet Ihre Organisation unter Unsicherheit im KI-Kontext?',
+    items: [
+      { id: 'E1', text: 'Wir feilen so lange an einem perfekten Plan, bis uns das Zeitfenster für KI-Innovationen entgleitet.' },
+      { id: 'E2', text: 'Entscheidungen werden bei uns oft so getroffen, dass im Misserfolgsfall niemandem persönlich die Schuld zugewiesen werden kann.' },
+      { id: 'E3', text: 'Wer bei uns mutig entscheidet und scheitert, wird härter kritisiert als jemand, der einfach abwartet.' },
+    ],
+  },
+  // Block B · Mindset-Ressourcen
+  {
+    id: 'eigenverantwortung', label: 'Eigenverantwortung', block: 'B', deepOnly: true,
+    intro: 'Übernimmt das Team Eigenverantwortung im KI-Wandel — oder verharrt es in Reaktivität?',
+    items: [
+      { id: 'V1', text: 'Das Team sieht sich als Opfer des KI-Wandels und glaubt, keinen eigenen Einfluss zu haben.' },
+      { id: 'V2', text: 'Mein Team wartet bei KI-Themen passiv auf Vorgaben, statt selbstständig Ideen zur Prozessverbesserung zu entwickeln.' },
+      { id: 'V3', text: 'Bei Rückschlägen mit KI-Tools fokussiert sich das Team auf Probleme, statt Fehler als Lernchance zu nutzen.' },
+    ],
+  },
+  {
+    id: 'chancenbewusstsein', label: 'Chancenbewusstsein', block: 'B', deepOnly: true,
+    intro: 'Sieht das Team in KI eine Wachstumschance oder primär eine Bedrohung?',
+    items: [
+      { id: 'W1', text: 'Mein Team betrachtet KI-Technologien grundsätzlich als Bedrohung der gewohnten Abläufe anstatt als nützlichen Hebel.' },
+      { id: 'W2', text: 'Bei KI-Projekten dominiert im Team sofort die Überzeugung: "Das schaffen wir sowieso nicht."' },
+      { id: 'W3', text: 'KI-Anforderungen werden als lästige Störung empfunden, nicht als wertvolles Training für die Zukunft.' },
+    ],
+  },
+  // Block C · Business & Struktur
+  {
+    id: 'strategische_klarheit', label: 'Strategische Klarheit', block: 'C', deepOnly: true,
+    intro: 'Folgt Ihre KI-Nutzung einem klaren strategischen Ziel?',
+    items: [
+      { id: 'SK1', text: 'Wir verfolgen zu viele KI-Projekte parallel, anstatt wenige fokussiert zu skalieren.' },
+      { id: 'SK2', text: 'Unsere KI-Technologie wurde ausgewählt, bevor ein klar definierter, finanziell messbarer Mehrwert vorlag.' },
+      { id: 'SK3', text: 'Unsere KI-Initiativen werden als IT-Projekte gesteuert, ohne dass Fachbereiche operative Ergebnisverantwortung tragen.' },
+    ],
+  },
+  {
+    id: 'roi', label: 'ROI & Wertnachweis', block: 'C', deepOnly: true,
+    intro: 'Wie wird der Geschäftswert Ihrer KI-Projekte gemessen?',
+    items: [
+      { id: 'R1', text: 'Der Erfolg unserer KI-Anwendungen basiert auf Bauchgefühl statt auf harten Kennzahlen wie Fehlerkosten oder Zeitersparnis.' },
+      { id: 'R2', text: 'Nach der KI-Einführung wird der tatsächliche Return on Investment im Regelbetrieb nicht mehr systematisch nachgehalten.' },
+      { id: 'R3', text: 'Unsere KI-Piloten laufen ohne klare wirtschaftliche Abbruchkriterien weiter, selbst wenn sich kein finanzieller Nutzen einstellt.' },
+    ],
+  },
+  {
+    id: 'daten_compliance', label: 'Daten & Compliance', block: 'C', deepOnly: true,
+    intro: 'Wie ist Ihre Organisation bezüglich Data Readiness und EU AI Act aufgestellt?',
+    items: [
+      { id: 'D1', text: 'Wir haben keine systematische Übersicht, welche KI-Systeme nach dem EU AI Act welcher Risikoklasse unterliegen.' },
+      { id: 'D2', text: 'Uns fehlen strukturierte Schulungsprogramme, um die gesetzlich geforderte KI-Kompetenz unserer Mitarbeitenden nachzuweisen.' },
+      { id: 'D3', text: 'Viele unserer Mitarbeitenden nutzen private, nicht freigegebene KI-Tools, ohne dass wir das kontrollieren können.' },
+    ],
+  },
+  {
+    id: 'governance', label: 'Governance & Ownership', block: 'C', deepOnly: true,
+    intro: 'Wie ist KI organisational verankert — inklusive Mitbestimmung?',
+    items: [
+      { id: 'G1', text: 'KI-spezifische Risiken werden isoliert betrachtet und nicht in unser bestehendes IT-Sicherheits- oder Compliance-Management integriert.' },
+      { id: 'G2', text: 'Wir beziehen unseren Betriebsrat erst sehr spät in KI-Entscheidungen ein, wenn Widerstand bereits entstanden ist.' },
+      { id: 'G3', text: 'Wir führen kein zentrales KI-Inventar mit Dokumentation und Risikoklassifizierung der eingesetzten Systeme.' },
+    ],
+  },
+  {
+    id: 'lernarchitektur', label: 'Lernarchitektur', block: 'C', deepOnly: true,
+    intro: 'Gibt es in Ihrer Organisation eine Infrastruktur, in der KI-Experimente scheitern dürfen?',
+    items: [
+      { id: 'L1', text: 'Es gibt bei uns keine geschützten Experimentierräume oder Fehlerbudgets, in denen KI-Piloten ohne persönliche Folgen scheitern dürfen.' },
+      { id: 'L2', text: 'Nach KI-Piloten fehlen strukturierte Rückblicke — derselbe "Workslop" wird im Arbeitsalltag unbemerkt wiederholt produziert.' },
+      { id: 'L3', text: 'Wir fokussieren bei KI ausschließlich auf schnelle Effizienzgewinne und meiden explorative Projekte mit unsicherem Ausgang.' },
+    ],
+  },
+];
+
+// Helper: nur Quick-Check-Dimensionen (Block A, first 4)
+const QUICK_DIMENSIONS = DIMENSIONS.filter(d => !d.deepOnly);
+
+const LIKERT_LABELS = ['Trifft gar nicht zu', '', 'Teils/teils', '', 'Trifft voll zu'];
+
+const SHIFT_PHASES = {
+  VOR_SENSE: { index: 0, label: 'Vor SENSE', shortLabel: 'Vor S', summary: 'KI-Transformation noch nicht begonnen', nextBreakpoint: 'SENSE', format: 'Impuls-Keynote', narrative: 'Ihr Team steht am Anfang – das Thema KI muss erst Bewusstsein finden, bevor Einzelmaßnahmen wirken können.' },
+  SENSE:     { index: 1, label: 'S — SENSE',  shortLabel: 'SENSE',  summary: 'Standort erkennen',  nextBreakpoint: 'HUMAN', format: 'Workshop: Standortanalyse mit Führungsteam', narrative: 'Erste Reibungen sind da, aber der Standort ist noch unklar. Jetzt gilt es, Klarheit über die Ausgangslage zu schaffen.' },
+  HUMAN:     { index: 2, label: 'H — HUMAN',  shortLabel: 'HUMAN',  summary: 'Mensch ins Zentrum', nextBreakpoint: 'IGNITE', format: 'SHIFT-Begleitung (Mindset-Schwerpunkt)', narrative: 'Tools sind im Einsatz, aber die menschliche Seite ist nicht nachgekommen. Ängste sind real, Orientierung dünn, das "Warum" nicht geteilt. Bevor Begeisterung entstehen kann, muss die HUMAN-Phase abgeschlossen werden.' },
+  IGNITE:    { index: 3, label: 'I — IGNITE', shortLabel: 'IGNITE', summary: 'Begeisterung zünden', nextBreakpoint: 'FRAME',  format: 'KI-Umsetzungssprint + Mindset', narrative: 'Der Mindshift ist angelegt, jetzt braucht es die erlebten Erfolge – Quick Wins, Aha-Momente, die aus "müssen" ein "wollen" machen.' },
+  FRAME:     { index: 4, label: 'F — FRAME',  shortLabel: 'FRAME',  summary: 'Prozess gestalten', nextBreakpoint: 'THRIVE', format: 'KI-Umsetzungssprint (technisch)', narrative: 'Nutzung läuft, aber unkonsolidiert. Jetzt braucht es Struktur: Leitplanken, Tool-Portfolio, skalierbare Architektur.' },
+  THRIVE:    { index: 5, label: 'T — THRIVE', shortLabel: 'THRIVE', summary: 'Permanent wachsen', nextBreakpoint: null,     format: 'Sparring / Review', narrative: 'Ihre Organisation lernt eigenständig. Jetzt geht es darum, diesen Zustand zu erhalten – und Impulse von außen punktuell zu nutzen.' },
+};
+
+const INTERVENTIONS = {
+  'SV-1': {
+    title: 'Relational Job Design',
+    shiftPhase: 'I / F', effort: 'Niedrig', source: 'Adam Grant (Wharton) · Task Significance-Forschung',
+    body: 'Wenn Mitarbeitende den Eindruck verlieren, dass ihre Arbeit für andere Menschen einen Unterschied macht, sinkt die Identifikation. KI verstärkt das – Sie können es kontern, indem Sie den Kontakt zwischen Team und Endnutzer wieder sichtbar machen.',
+    why: 'Schon kurze, regelmäßige direkte Kontakte zwischen Leistungserbringern und Nutzern steigern Engagement und Qualität messbar – in einer viel zitierten Studie um bis zu 500 %.',
+    steps: [
+      '2 Wochen: 3 Kunden oder interne Endnutzer identifizieren, deren Nutzen Ihr Team bisher nicht persönlich erlebt. 15-Minuten-Gespräch vereinbaren.',
+      'Nächstes Team-Meeting: Einen dieser Nutzer 5 Minuten erzählen lassen, was die Arbeit Ihres Teams für ihn bewirkt – ohne Folien.',
+      'Dauerhaft: Als Ritual etablieren – ein "Nutzer-Fenster" alle 4–6 Wochen, 10 Minuten.',
+    ],
+    pitfall: 'Nicht als Kunden-Feedback-Runde inszenieren. Es geht um das Erleben von Wirkung, nicht um Verbesserungsvorschläge.',
+  },
+  'SV-2': {
+    title: 'Human-in-the-Loop als Team-Regel',
+    shiftPhase: 'H / I', effort: 'Niedrig', source: 'Ethan Mollick (Wharton) · Co-Intelligence',
+    body: 'Der schnellste Weg ins Sinnvakuum: KI wird als "besser, schneller, fehlerfreier" dargestellt, Menschen werden Nachprüfer. Kehren Sie das um, indem Sie die Rollenverteilung explizit machen.',
+    why: 'Mollick beschreibt KI als "schnellen, aber unzuverlässigen Praktikanten" – eine Metapher, die sofort klar macht, wer das Urteil behält.',
+    steps: [
+      'Heute: Regel aufschreiben: "Bei uns entscheidet ein Mensch. Die KI schlägt vor, wir wählen aus." Ein Satz, sichtbar.',
+      'Innerhalb 2 Wochen: Mit dem Team klären, in welchen Prozessen die Regel gilt und wo sie ggf. bereits verletzt wird.',
+      'Dauerhaft: Bei jedem neuen Tool: "Wer ist hier der entscheidende Mensch?" – erst beantworten, dann einführen.',
+    ],
+    pitfall: 'Die Regel verliert Wirkung, wenn sie nur Aushang ist. Sie muss auch dann gelten, wenn es schneller wäre, es nicht zu tun.',
+  },
+  'SV-3': {
+    title: 'Job Crafting durch Stärken-Dialoge',
+    shiftPhase: 'I / F', effort: 'Mittel', source: 'Grant / JD-R',
+    body: 'Wenn KI Arbeit abnimmt, entsteht Zeit. Diese wird selten aktiv gestaltet – sie wird mit neuen Aufgaben gefüllt, die oft noch weniger bedeutungsvoll sind. Nutzen Sie die frei gewordene Zeit, um Rollen neu zu formen.',
+    why: 'JD-R zeigt: Mitarbeitende, die Aufgaben aktiv an ihre Stärken anpassen können, haben höhere Dedication-Werte. Grants "Entry Interviews" sind ursprünglich für neue Mitarbeitende – für bestehende Teams adaptierbar als eigenständiger Stärken-Dialog, klar getrennt vom Leistungsgespräch.',
+    steps: [
+      '6 Wochen: Mit jedem direkten Mitarbeitenden einen 30-Min-Stärken-Dialog – explizit kein Leistungsgespräch: Was machen Sie gern? Was würden Sie lieber? Was schlummert ungenutzt?',
+      'Im Anschluss: Pro Person 1 Aufgabe identifizieren, die durch KI-Entlastung möglich wird und zu einer persönlichen Stärke passt.',
+      'Nach 3 Monaten: Review – hat die neue Aufgabe Wirkung gezeigt?',
+    ],
+    pitfall: 'Nicht alle wollen neu craften. Auch Stabilität ist eine legitime Wahl. Kein Zwang.',
+  },
+  'SV-4': {
+    title: 'Narrativ: Augmentation statt Automation',
+    shiftPhase: 'S / H', effort: 'Niedrig', source: 'Erik Brynjolfsson (Stanford Digital Economy Lab) · Productivity Fork',
+    body: 'Wie Ihr Unternehmen über KI spricht, entscheidet, ob Mitarbeitende sich bedroht oder eingeladen fühlen. "KI spart Personalkosten" vs. "KI macht unsere Leute besser" – die zweite Erzählung reduziert Sinnverlust, wenn sie echt gemeint ist.',
+    why: 'Brynjolfsson nennt es die "Productivity Fork": Unternehmen, die auf Augmentation setzen, erzielen messbar höheres Engagement und bessere Ergebnisse.',
+    steps: [
+      'Nächste KI-Kommunikation: "Effizienz" und "Einsparung" durch "Qualität" und "Erweiterung" ersetzen.',
+      'Nächstes Meeting: Offen fragen – "Wo hat KI Ihre Arbeit besser gemacht, nicht nur schneller?" – und zuhören.',
+      'Nächste Stellenplanung: Prüfen, ob Ihre Entscheidungen das Augmentation-Narrativ stützen. Falls nicht: Narrativ korrigieren oder Entscheidung überdenken.',
+    ],
+    pitfall: 'Das Narrativ bricht zusammen, sobald eine Stelle mit "KI macht das jetzt" begründet wird. Glaubwürdigkeit ist alles.',
+  },
+  'KA-1': {
+    title: 'Co-Skilling & Peer-Learning',
+    shiftPhase: 'H / I', effort: 'Niedrig', source: 'Employee-Centered AI Implementation (ECAII) · Peer-Learning-Forschung',
+    body: 'Formelle Schulungen erzeugen oft mehr Druck als Kompetenz – sie machen sichtbar, was jemand nicht kann. Gemeinsames Lernen dreht die Dynamik: aus Bewertung wird Experimentieren.',
+    why: 'Peer-Learning erhöht KI-Akzeptanz messbar und baut Techno-Insecurity ab, weil niemand allein dasteht.',
+    steps: [
+      'Diese Woche: 2–3 Tandems bilden – je 1 Person, die KI nutzt, + 1 Person, die zögert. Kein Hierarchie-Mix.',
+      '1 Monat: Jedem Tandem 60 Minuten Arbeitszeit pro Woche für gemeinsames Experimentieren an realem Problem. Kein Report.',
+      '6 Wochen: Lockerer Austausch – was haben die Tandems gelernt, was hat nicht funktioniert?',
+    ],
+    pitfall: 'Wenn es nach Pflicht riecht, scheitert es. Lust an der Sache ist Voraussetzung, sonst lieber keine.',
+  },
+  'KA-2': {
+    title: 'Quick Wins Literacy',
+    shiftPhase: 'I', effort: 'Mittel', source: 'Henner Gimpel (Fraunhofer FIT) · AI Literacy | Monideepa Tarafdar · Technostress',
+    body: 'Viele Menschen scheitern an KI, weil sie zu groß beginnen. Ein komplexer Anwendungsfall am ersten Tag produziert Frust. Starten Sie klein – mit Aufgaben, bei denen KI in 2 Minuten spürbaren Nutzen bringt.',
+    why: 'Banduras Self-Efficacy-Theorie: Selbstwirksamkeit wächst durch erlebte Erfolge, nicht durch Erklärungen.',
+    steps: [
+      'Diese Woche: 3 Quick-Win-Szenarien aus dem Arbeitsalltag sammeln (lange E-Mails zusammenfassen, Textentwürfe überarbeiten, Meeting-Notizen strukturieren).',
+      'Nächstes Team-Meeting: Einen Quick Win live zeigen – 3 Minuten, keine Theorie.',
+      'Dauerhaft: Jede Woche ein neuer Quick Win, abwechselnd präsentiert.',
+    ],
+    pitfall: 'Wenn Sie selbst nicht regelmäßig KI nutzen, spüren das die Mitarbeitenden. Quick Wins müssen echt sein.',
+  },
+  'KA-3': {
+    title: 'Use-Case-Beteiligung',
+    shiftPhase: 'H / F', effort: 'Mittel', source: 'Monideepa Tarafdar · Technostress Inhibitors',
+    body: 'Wenn KI-Prozesse von oben verordnet werden, fühlen sich Mitarbeitende ausgeliefert. Im Mittelstand liegt die Tool-Auswahl oft bei IT oder Geschäftsführung – realistisch. Binden Sie das Team dafür bei der Prozessgestaltung und Use-Case-Auswahl ein.',
+    why: 'Tarafdar: Beteiligung ist einer der wirksamsten "Technostress Inhibitors". Der Kontrollgewinn entsteht, wenn Mitarbeitende mitbestimmen, WOFÜR KI eingesetzt wird – nicht nur welches Tool.',
+    steps: [
+      'Beim nächsten KI-Rollout: Nicht "Wir nehmen Tool X" – sondern "An welcher Stelle soll uns KI wirklich helfen?" Mit dem Team 2–3 Use-Case-Kandidaten sammeln.',
+      '2 Wochen: Jede Person testet einen Use Case an realer Aufgabe, bringt die Erfahrung zurück.',
+      'Einführung: Zwei "Use-Case-Paten" benennen – kein Admin, sondern Ansprechpartner mit Gestaltungsmandat für den jeweiligen Prozess.',
+    ],
+    pitfall: 'Scheindemokratie ist schlimmer als offener Top-down-Entscheid. Wenn Sie die Antwort zum Use Case kennen, sagen Sie es.',
+  },
+  'KA-4': {
+    title: 'Modeling & IT-Mindfulness',
+    shiftPhase: 'H / I', effort: 'Niedrig', source: 'Ethan Mollick · Modeling | Adam Grant · Agility beats Ability',
+    body: 'Mitarbeitende imitieren nicht, was Sie sagen, sondern was Sie tun. Wenn Sie KI nur erwähnen, aber nicht sichtbar nutzen – oder nur Erfolge zeigen, nie Scheitern – entsteht ein unerreichbares Vorbild. Das lähmt.',
+    why: 'Nicolai Tangen nutzt ChatGPT offen in Meetings, auch mit Fehlern. Das öffnet Räume, in denen andere experimentieren. "Agility beats ability".',
+    steps: [
+      'Nächstes Meeting: KI live für eine Aufgabe vor dem Team nutzen. Auch den ersten schlechten Output zeigen.',
+      'Regelmäßig teilen: "Hier hat KI diese Woche nicht geholfen, weil…" – wertvoller als jede Erfolgsstory.',
+      'Aktiv einladen: "Welche KI-Fehlschläge habt ihr diese Woche gehabt?" – Scheitern normal machen.',
+    ],
+    pitfall: 'Gespielte Unsicherheit merken Menschen sofort. Nur echt zeigen.',
+  },
+  'FV-1': {
+    title: 'Psychologische Sicherheit aktiv einfordern',
+    shiftPhase: 'H', effort: 'Niedrig', source: 'Amy Edmondson (Harvard Business School) · Fearless Organization',
+    body: 'Schweigen in Meetings bedeutet nicht Zustimmung. Es bedeutet oft, dass Menschen Bedenken haben, aber die Kosten des Aussprechens zu hoch finden. Das ändert sich nicht passiv.',
+    why: 'Edmondson: Psychologische Sicherheit ist kein Klimafaktor, sondern Führungsverhalten. Wer Bedenken explizit einlädt, bekommt sie.',
+    steps: [
+      'Nächstes Meeting: Statt "Passt das so?" konkret fragen: "Was sehen Sie kritisch? Was würde Sie nachts wachhalten?"',
+      'Nach kritischen Beiträgen: Sofort und sichtbar bedanken. "Dass Sie das ansprechen, ist genau das, was wir brauchen."',
+      'Schweigen ansprechen: "Mir fällt auf, dass zu Thema X wenig gesagt wird. Was müsste gelten, damit jemand offen spricht?"',
+    ],
+    pitfall: 'Wer einmal Bedenken einlädt und ungeduldig reagiert, zerstört die Bemühung für Monate.',
+  },
+  'FV-2': {
+    title: 'Leitplanken setzen',
+    shiftPhase: 'F', effort: 'Mittel', source: 'Isabell Welpe (TUM) · Digital Leadership Scale — Transparent Agenda',
+    body: '"Macht mehr mit KI" reicht nicht. Mitarbeitende brauchen klare Antworten: Wie viel Zeit? Wo liegt die Priorität bei Konflikt mit dem Tagesgeschäft? Ohne Leitplanken entsteht Lähmung.',
+    why: 'Welpe: In transformativen Phasen reduziert explizite Struktur das Basis-Angstlevel signifikant. Struktur und Empowerment sind keine Gegensätze.',
+    steps: [
+      'Diese Woche: 3 Leitplanken aufschreiben – z.B. "1 Stunde pro Woche für KI-Experimente", "bei Konflikt priorisiert der Kunde", "wer KI nutzt, teilt es im Team-Kanal".',
+      'Nächstes Meeting: Leitplanken vorstellen, Feedback aufnehmen, ggf. anpassen.',
+      'Nach 30 Tagen: Review – halten die Leitplanken? Müssen sie enger oder weiter werden?',
+    ],
+    pitfall: 'Zu viele Regeln erzeugen genau das Gefühl, das Sie vermeiden wollen. Max. 3 Leitplanken, je max. 1 Satz.',
+  },
+  'FV-3': {
+    title: 'Partizipative Agenda / Shared Leadership',
+    shiftPhase: 'F / T', effort: 'Mittel', source: 'Isabell Welpe (TUM) · Shared Leadership in digitalen Teams',
+    body: 'Wenn alle KI-Entscheidungen zentral getroffen werden, entsteht Abhängigkeit statt Kompetenz. Dezentralisieren Sie bewusst – nicht die Verantwortung für das Ergebnis, aber die Autonomie in der Umsetzung.',
+    why: 'Shared Leadership erhöht Vertrauen und Leistung in digitalen Teams nachweislich – vorausgesetzt, die Logik hinter Entscheidungen ist transparent.',
+    steps: [
+      'Nächste KI-Entscheidung: Kriterien offenlegen, bevor Sie entscheiden. "Welche Kriterien würdet ihr ergänzen?"',
+      'Ein Thema komplett übergeben: Eine Person oder ein kleines Team übernimmt ein KI-Vorhaben eigenverantwortlich.',
+      'Nach 3 Monaten: Prüfen, welche Entscheidungen Sie seit der Übergabe noch selbst getroffen haben. Jede ist ein Rücktritt.',
+    ],
+    pitfall: '"Shared Leadership" ohne Ressourcenmandat ist Delegation mit Extra-Arbeit. Ohne Budget keine Autonomie.',
+  },
+  'FV-4': {
+    title: 'Sinn-Narrativ etablieren',
+    shiftPhase: 'S / H', effort: 'Niedrig', source: 'Rafferty/Jimmieson/Armenakis · Change Readiness — Cognitive Consensus',
+    body: 'Viele KI-Initiativen scheitern nicht am Wie, sondern am Warum. Wenn jeder ein anderes "Warum" im Kopf hat, entstehen parallele Welten. Ein gemeinsames Warum entsteht durch Dialog, nicht Ankündigung.',
+    why: 'Cognitive Consensus (geteiltes Verständnis der Notwendigkeit) ist der stärkste Prädiktor für erfolgreiche Transformation.',
+    steps: [
+      '2 Wochen: Jeden direkten Mitarbeitenden einzeln fragen: "Warum machen wir das mit KI eigentlich?" Zuhören, nicht korrigieren.',
+      'Danach: Antworten zusammenschreiben – Lücken zwischen Ihrer und deren Version sind Ihre Kommunikations-Arbeit.',
+      'Nächster Team-Termin: Gemeinsam verhandeltes "Warum" in einem Satz präsentieren. Länger als 1 Satz = nicht fertig.',
+    ],
+    pitfall: 'Ein reines Führungskräfte-Narrativ fühlt sich für das Team fremd an. Die Sprache muss aus dem Team kommen.',
+  },
+  'TS-1': {
+    title: 'Pause for Purpose',
+    shiftPhase: 'F', effort: 'Niedrig', source: 'Holt et al. · Readiness for Organizational Change Scale',
+    body: 'Die schnellste Quelle von Zynismus: ein neues Tool, bei dem niemand weiß, warum es da ist. Bauen Sie einen Stop-Punkt ein – bevor Sie ein neues Tool einführen, klären Sie, welches konkrete Problem es löst.',
+    why: 'Change Appropriateness – der Glaube an die Sinnhaftigkeit der Veränderung – hat die stärkste Schutzwirkung gegen Change Fatigue.',
+    steps: [
+      'Vor dem nächsten Rollout: Einen Satz aufschreiben: "Dieses Tool lösen wir ein, weil es X konkret erleichtert." Nicht formulierbar? → nicht einführen.',
+      'Im Einführungsmeeting: Den Satz an den Anfang stellen, nicht ans Ende. Erst Problem, dann Tool.',
+      'Nach 60 Tagen: Überprüfen, ob das Tool das versprochene Problem löst. Wenn nein: abschalten.',
+    ],
+    pitfall: '"Weil alle es machen" und "weil der Chef es will" sind keine Purposes.',
+  },
+  'TS-2': {
+    title: 'Simplify Systems',
+    shiftPhase: 'F', effort: 'Hoch', source: 'Digital Transformation Fatigue · Techno-Instability-Forschung',
+    body: 'Wenn Ihr Team mit 7 KI-Tools parallel arbeitet, ist nicht ein 8. die Lösung – sondern Konsolidierung. Jedes Tool hat Nebenkosten, die unterschätzt werden.',
+    why: '"Techno-Instability" ist Hauptursache für Change Fatigue. Reduktion bringt Ruhe UND erhöht die Nutzungstiefe der verbliebenen Tools.',
+    steps: [
+      'Diese Woche: Bestandsliste aller KI-Tools erstellen, inkl. der heimlichen – offen fragen.',
+      'In 4 Wochen: Mindestens 1 Tool streichen. Auswahl: geringste Nutzung × höchste Redundanz.',
+      'Für verbliebene: Ein Tool = eine Anwendung. Wenn zwei Tools dasselbe lösen, eins wählen, durchziehen.',
+    ],
+    pitfall: 'Das Abschalten von Systemen ist politisch aufgeladen. Rechnen Sie mit Widerstand von Tool-Eignern.',
+  },
+  'TS-3': {
+    title: 'ADKAR Barrier Point Intervention',
+    shiftPhase: 'F', effort: 'Mittel', source: 'Prosci ADKAR · Barrier Point Methodik',
+    body: 'Der häufigste Fehler bei KI-Trainings: Man gibt denen Wissen, die eigentlich Sinn brauchen, und gibt denen Sinn, die eigentlich Übung brauchen. ADKAR schafft die Diagnose.',
+    why: 'Prosci unterscheidet 5 Phasen (Awareness, Desire, Knowledge, Ability, Reinforcement). Jede Person steckt an anderem Punkt.',
+    steps: [
+      'In einem 1:1: ADKAR-Phasen durchgehen, je 1–5-Skala. Erste Phase mit Wert ≤ 3 = Barrier Point.',
+      'Nur an dieser Phase arbeiten – z.B. bei niedrigem Awareness: keine Schulung, sondern Gespräch über das Warum.',
+      'Eine Phase weiter erst, wenn die vorherige stabilisiert ist (≥ 4).',
+    ],
+    pitfall: 'Man spürt sofort, wenn ADKAR als Checkliste durchgezogen wird. Erst nach dem 3. Gespräch sitzt die Methode.',
+  },
+  'TS-4': {
+    title: 'Small Wins feiern',
+    shiftPhase: 'I / F', effort: 'Niedrig', source: 'Albert Bandura · Self-Efficacy / Performance Accomplishments',
+    body: 'Wenn Ihr Team nur den Aufwand spürt, aber nie den Nutzen sieht, kippt die Energie. Kleine, sichtbare Erfolge machen messbar, dass es sich lohnt.',
+    why: '"Performance Accomplishments" (selbst erlebte Erfolge) sind die stärkste Quelle von Zuversicht. Kollektiv geteilt wirken sie sozial verstärkend.',
+    steps: [
+      'Ab nächster Woche: Freitags 5 Minuten im Team-Kanal fragen: "Wo hat uns KI diese Woche Zeit oder Kopfzerbrechen gespart?"',
+      'Quantifizieren wo möglich: "Zusammen 4 Stunden diese Woche" – macht den Nutzen konkret.',
+      'Nach 8 Wochen: Summe an die nächste Führungsebene eskalieren.',
+    ],
+    pitfall: 'Künstliche Erfolge sind schlimmer als keine. Wenn die Frage ehrlich bleibt und keine Antworten kommen, ist das die eigentliche Diagnose.',
+  },
+
+  // ===== Deep-Check Interventionen =====
+
+  // OR-1 · VOR_SENSE / SENSE Einstieg
+  'OR-1': {
+    title: 'Orientierungs-Workshop',
+    shiftPhase: 'Vor S / S', effort: 'Mittel', source: 'Mindshift-Praxis · SHIFT-Phase SENSE',
+    body: 'Bevor irgendwelche Tool-Entscheidungen Sinn ergeben, braucht das Fuehrungsteam ein ehrliches Bild: Wo stehen wir wirklich? Ein halbtägiger Workshop kartografiert aktuelle Prozesse, das Mindset im Team und die strategischen Schmerzpunkte — ohne Technik-Reden.',
+    why: 'Ohne Standortbestimmung wird jede KI-Investition zum Raten. Phase SENSE ist die Voraussetzung für fundiertes Investieren — nicht Aktionismus, sondern Klarheit.',
+    steps: [
+      'Halbtagesworkshop mit 3–6 Fuehrungskraeften: Welche Routine-Prozesse binden am meisten Zeit? Welche Qualitaetsprobleme wiederholen sich? Wo ist das Team vorsichtig-skeptisch?',
+      'Output: 2–3 Pilotkandidaten mit klarem Schmerzpunkt + Einschaetzung der Mindset-Bereitschaft je Bereich.',
+      'Nach 2 Wochen: Priorisierung eines einzigen Pilotkandidaten zum Start — nicht 5 parallel.',
+    ],
+    pitfall: 'Der Workshop endet oft mit zu vielen Ideen. Disziplin: max 1 Start-Pilot, Rest in Backlog.',
+  },
+
+  // A5 · Entscheidungsangst
+  'EA-1': {
+    title: 'Just Culture etablieren',
+    shiftPhase: 'H / F', effort: 'Mittel', source: 'Sidney Dekker · Just Culture | Hampel',
+    body: 'Die Angst vor Fehlern paralysiert — weil jede Entscheidung wie eine Sanktionsbedrohung fühlt. Just Culture trennt institutionalisiert zwischen Lernfehler und grober Fahrlässigkeit. Das macht mutige Entscheidungen wieder möglich.',
+    why: 'Just Culture ist evidenzbasiert aus der Luftfahrt- und Medizinsicherheit adaptiert. Die klare Regel, dass Lernfehler nicht bestraft werden, reduziert defensives Verhalten messbar.',
+    steps: [
+      'Formulieren Sie eine einfache Regel: "Bei uns werden gut gemeinte Fehler analysiert, nicht sanktioniert. Grobe Fahrlässigkeit bleibt Sache der Konsequenz."',
+      'Testen Sie die Regel am ersten realen KI-Fehlschlag: Öffentliche Würdigung des Lernens, keine persönliche Kritik.',
+      'Nach 3 Monaten: Fragen Sie anonym ab, ob das Team die Regel als echt erlebt. Diskrepanz = Ihre Arbeit.',
+    ],
+    pitfall: 'Just Culture lebt von ZWEI Zuverlässigkeiten: Lernfehler nicht bestrafen UND Fahrlässigkeit klar adressieren. Weich an der Stelle untergräbt beides.',
+  },
+  'EA-2': {
+    title: 'Pre-Mortem vor großen Entscheidungen',
+    shiftPhase: 'F', effort: 'Niedrig', source: 'Gary Klein · Pre-Mortem',
+    body: 'Bevor eine große KI-Entscheidung fällt, schreiben alle in 10 Minuten auf: "Wir sind in 6 Monaten gescheitert — woran?" Das bringt Risiken aus dem Unbewussten in den Raum, ohne dass jemand als Nörgler dasteht.',
+    why: 'Kleins Forschung zeigt: Pre-Mortems erhöhen die Erkennungsrate kritischer Risiken um 30 %. Weil das Team sich vorstellt, dass das Scheitern bereits passiert ist, fällt Kritik leichter.',
+    steps: [
+      'Vor der nächsten KI-Entscheidung: 10 Minuten "Pre-Mortem" — jeder schreibt 3 mögliche Scheiterungsgründe auf.',
+      'Gemeinsam sortieren: Welche Risiken sind adressierbar, welche akzeptieren wir?',
+      'Die Entscheidung danach tragen — mit bewusster Risikokenntnis, nicht aus Naivität.',
+    ],
+    pitfall: 'Pre-Mortems werden hohl, wenn die Führung schon vorher entschieden hat. Echte Offenheit oder gar nicht.',
+  },
+  'EA-3': {
+    title: 'Cost of Delay sichtbar machen',
+    shiftPhase: 'F', effort: 'Mittel', source: 'Hampel · Opportunity Cost Neglect',
+    body: 'Zögern fühlt sich kostenlos an, weil die Kosten unsichtbar sind. Machen Sie die Opportunitätskosten des Nichtstuns quantifizierbar — und Entscheidungen werden auf einmal möglich.',
+    why: 'Frederick et al.: Ohne sichtbar gemachte Cost of Delay entscheidet das System systematisch für das Abwarten. Zahlen verschieben die Default-Präferenz.',
+    steps: [
+      'Für 1-2 aktuelle Abwarten-Entscheidungen: Rechnen Sie die Cost of Delay grob auf — gesparte Arbeitszeit × Monate × Stundensatz.',
+      'In der nächsten Entscheidungsvorlage: Fügen Sie eine Zeile "Kosten des Aufschiebens" ein — neben "Kosten des Handelns".',
+      'Etablieren Sie es als Standard in wichtigen Entscheidungs-Templates.',
+    ],
+    pitfall: 'Cost-of-Delay-Zahlen sind oft grob geschätzt — das ist OK. Die Sichtbarkeit, nicht die Präzision, ist der Hebel.',
+  },
+
+  // B1 · Eigenverantwortung
+  'EV-1': {
+    title: 'Use-Case-Paten ernennen',
+    shiftPhase: 'H / I', effort: 'Niedrig', source: 'Bischoff · Vom Reagierer zum Gestalter',
+    body: 'Aus Opferrolle kommt man nicht durch Appelle, sondern durch konkrete Gestaltungsmöglichkeit. Jedes KI-Vorhaben bekommt einen Paten aus dem Team — nicht Admin, sondern Ownership.',
+    why: 'Wer ein Thema "besitzt", hört auf, es zu kommentieren, und fängt an, es zu tragen. Bischoff: Eigenverantwortung wächst durch Erlaubnis zur Gestaltung.',
+    steps: [
+      'Bei jedem KI-Vorhaben: Einen Paten benennen, der Mandat + Budget bekommt.',
+      'Der Pate ist Ansprechpartner, Entscheider über Details, und verantwortet den Erfolg.',
+      'Nach 3 Monaten: Paten rotieren lassen — Eigenverantwortung soll zirkulieren, nicht verharren.',
+    ],
+    pitfall: 'Paten ohne Ressourcen oder Entscheidungsmandat sind nur neue Aufgaben. Führt dann zur Entwertung der Rolle.',
+  },
+  'EV-2': {
+    title: 'Entscheidungsklarheit per Delegations-Matrix',
+    shiftPhase: 'F', effort: 'Mittel', source: 'Richard Hackman · Autoritätslevel',
+    body: 'Häufig wartet das Team passiv, weil unklar ist, wer was entscheiden darf. Eine einfache Delegations-Matrix löst das: "Tool-Auswahl: Ihr — mit Info an mich. Investition > 5k: mit mir. Rollout: Ich."',
+    why: 'Hackmans Forschung zu Teameffektivität: Klarheit über Entscheidungsebenen ist eine der stärksten Energieunterstützer in Teams. Unklarheit führt zur Lähmung.',
+    steps: [
+      'Diese Woche: Typische KI-Entscheidungen auflisten (Tool-Test, Prompt-Library, Pilot, Rollout, Budget).',
+      'Jede Entscheidung mit Level versehen: "Team allein", "Team mit Info", "Team mit Absprache", "Führung".',
+      'Im Team-Meeting vorstellen, 2 Wochen testen, dann justieren.',
+    ],
+    pitfall: 'Zu detaillierte Matrizen werden nicht gelebt. 5–7 Entscheidungstypen reichen — mehr wirkt wie Bürokratie.',
+  },
+  'EV-3': {
+    title: 'Lösungsrituale statt Problemrituale',
+    shiftPhase: 'H / I', effort: 'Niedrig', source: 'Bischoff · Lösungsspirale',
+    body: 'In vielen Teams kreist das Gespräch um Probleme. Drehen Sie die Kreisel: Bei jedem KI-Problem wird nach spätestens 5 Minuten zur Lösungssuche gewechselt — auch wenn noch nicht alles verstanden ist.',
+    why: 'Bischoff: Problemfokus ist Symptom der Reaktivität. Lösungsfokus ist gelebte Eigenverantwortung. Der Wechsel ist ritualisierbar.',
+    steps: [
+      'Im nächsten Team-Meeting: Explizit ansagen — "Wir verstehen jetzt 5 Min das Problem, dann 15 Min Lösungen."',
+      'Halten Sie sich selbst daran. Wenn jemand wieder ins Problem kippt, freundlich: "Zurück zu Lösungen."',
+      'Nach 4 Wochen: Im Team reflektieren, ob sich der Ton verändert hat.',
+    ],
+    pitfall: 'Vorschnelles Lösungssuchen ohne Problemverständnis ist auch destruktiv. Balance halten.',
+  },
+
+  // B2 · Chancenbewusstsein
+  'CB-1': {
+    title: 'Augmentation-Storys sammeln',
+    shiftPhase: 'I', effort: 'Niedrig', source: 'Storytelling · Narrative Reframing',
+    body: 'Das Team braucht eigene Geschichten davon, wie KI jemanden wertvoller gemacht hat. Nicht abstrakt "KI erweitert Menschen", sondern konkret: "Bei Frau Schmidt hat die KI die Recherche halbiert — sie hat damit das Kundengespräch verdoppelt."',
+    why: 'Narratives Reframing: Geschichten wirken stärker als Argumente. Eigene Team-Storys überzeugen mehr als externe Beispiele.',
+    steps: [
+      'Sammeln Sie in den nächsten 4 Wochen 3 echte Storys aus Ihrem Team, wo KI einen Menschen wertvoller gemacht hat — nicht ersetzt.',
+      'Präsentieren Sie die Storys kurz im Team-Meeting, mit der Person im Mittelpunkt.',
+      'Dokumentieren Sie die 3 besten als kleine Fallstudien für neue Teammitglieder.',
+    ],
+    pitfall: 'Aufgeblasene Storys wirken manipulativ. Lieber eine echte kleine als drei gestellte.',
+  },
+  'CB-2': {
+    title: 'Explorationstage',
+    shiftPhase: 'I / F', effort: 'Mittel', source: 'Atlassian ShipIt / Google 20%',
+    body: 'Einmal im Monat 4 Stunden "Exploration" — das Team darf mit KI experimentieren, ohne operatives Ziel. Kein Output-Druck. Nur Spielen, Lernen, Teilen.',
+    why: 'Exploration braucht Zeit ohne Produktionsdruck. Atlassians und Googles Erfahrung: Solche Räume sind der Hauptquell für echte Innovation.',
+    steps: [
+      'Nächsten Monat: 4 Stunden "KI-Explorationstag" ansetzen. Keine Agenda, keine Deliverables.',
+      'Am Ende 30 Minuten Show-and-Tell: Was haben wir entdeckt?',
+      'Nach 3 Durchläufen: Bewerten, ob der Effekt die Zeit rechtfertigt — wenn ja, institutionalisieren.',
+    ],
+    pitfall: 'Wenn Sie den Tag mit Produktionsdruck aufladen, ist es kein Explorationstag mehr. Echte Freiheit oder gar nicht.',
+  },
+  'CB-3': {
+    title: 'Peer-Inspiration aus anderen Teams',
+    shiftPhase: 'I', effort: 'Niedrig', source: 'Social Learning Theory · Bandura',
+    body: 'Manchmal kippt das Mindset nicht durch eigene Einsicht, sondern durch einen Peer-Effekt: "Die Schreinerei 30 km weiter hat KI im Angebotsprozess — und es läuft." Die eigene Firma fühlt sich weniger allein.',
+    why: 'Soziales Lernen (Bandura): Verhalten ist stark durch Beobachtung ähnlicher Akteure geprägt. Peer-Firmen überzeugen stärker als Beratungs-Cases.',
+    steps: [
+      'Identifizieren Sie 1-2 vergleichbare Mittelstandsbetriebe, die in KI weiter sind.',
+      'Organisieren Sie eine Besichtigung oder ein gemeinsames Abendessen mit 2–3 Ihrer Mitarbeitenden.',
+      'Nach dem Besuch: Debrief im Team — was haben Sie gesehen, was ist übertragbar?',
+    ],
+    pitfall: 'Vorzeige-Unternehmen besuchen, die nicht vergleichbar sind, erzeugt Ohnmacht statt Inspiration. Ähnliche Größe, ähnliche Branche.',
+  },
+
+  // C1 · Strategische Klarheit
+  'SK-1': {
+    title: 'Nordstern-Workshop',
+    shiftPhase: 'S / H', effort: 'Mittel', source: 'Osterwalder · Strategic Clarity Framework',
+    body: 'Ein halber Tag mit Führungsteam: Wofür soll KI in unserem Unternehmen stehen, in 2 Jahren? Das Ergebnis ist ein einziger Satz — nicht die Strategie, sondern der Nordstern, an dem sich Piloten ausrichten.',
+    why: 'Ohne strategischen Anker zerfällt KI in isolierte IT-Projekte — genau das dokumentieren McKinsey, BCG und Gartner als Hauptscheiterungsgrund.',
+    steps: [
+      'Halbtagesworkshop mit 4–6 Führenden: Was soll KI für uns können, was nicht?',
+      'Formulieren Sie EINEN Nordstern-Satz. Länger als ein Satz = nicht fertig.',
+      'Alle KI-Entscheidungen der nächsten 12 Monate werden daran gemessen.',
+    ],
+    pitfall: 'Ein Nordstern, der alles abdeckt, leitet nichts. Lieber schärfer entscheiden als weicher formulieren.',
+  },
+  'SK-2': {
+    title: 'Use-Case-Priorisierung (Max 3 parallel)',
+    shiftPhase: 'F', effort: 'Mittel', source: 'BCG · Focus over Spread',
+    body: 'Statt 15 Piloten parallel: Max. 3 Use Cases zur Zeit, mit klarer Reihenfolge. Nach Skalierung des ersten folgt der nächste. Konzentration schlägt Breite.',
+    why: 'BCG: Unternehmen, die sich auf wenige KI-Use-Cases fokussieren und diese konsequent skalieren, haben 3× höhere Erfolgsquote als Breit-Streuer.',
+    steps: [
+      'Listen Sie alle laufenden/geplanten KI-Initiativen auf — inklusive Schatten-Projekten.',
+      'Bewerten Sie je Impact (Geschäftswert) und Effort (Machbarkeit). Max 3 mit höchstem Impact/Effort-Verhältnis bleiben aktiv.',
+      'Die anderen: Pausieren, verschieben oder streichen. Transparent kommunizieren, warum.',
+    ],
+    pitfall: 'Das Streichen tut politisch weh — viele Projekte haben Pat:innen. Trotzdem: Fokus schlägt Harmonie.',
+  },
+  'SK-3': {
+    title: 'Fachbereichs-Sponsor benennen',
+    shiftPhase: 'F', effort: 'Niedrig', source: 'BCG · Business Ownership',
+    body: 'Jedes KI-Vorhaben bekommt einen Sponsor aus dem Fachbereich — keinen IT-Leiter, keinen Projektmanager. Die Person, deren Abteilung messbar profitiert oder leidet. Sonst bleibt es ein IT-Spielzeug.',
+    why: 'BCG: Fehlende Business Ownership ist einer der top-3 Scheiterungsgründe. Mit Sponsor steigt die Erfolgsquote signifikant, weil Skin-in-the-Game echt wird.',
+    steps: [
+      'Für jedes aktive KI-Vorhaben: Einen Fachbereichs-Sponsor benennen, explizit mit Namen.',
+      'Der Sponsor trägt die Business-KPIs mit — nicht als Gutachter, sondern als Mitträger.',
+      'Bei fehlendem Sponsor: Vorhaben pausieren, bis einer gefunden ist.',
+    ],
+    pitfall: 'Gezwungene Sponsoren-Ernennung funktioniert nicht. Lieber kein Sponsor (= Warteschleife) als ein unwilliger.',
+  },
+
+  // C2 · ROI & Wertnachweis
+  'RO-1': {
+    title: 'Baseline messen vor Rollout',
+    shiftPhase: 'S', effort: 'Mittel', source: 'SHIFT Framework · Phase S',
+    body: 'Vor jedem KI-Rollout: 2–4 Wochen Baseline messen. Wie lange dauert der Prozess heute? Wie viele Fehler passieren? Ohne Baseline gibt es später keinen Vergleich — nur Bauchgefühl.',
+    why: 'Ohne Ausgangswert ist keine Wirkungsaussage möglich. SHIFT Phase S: Baseline ist Grundvoraussetzung für ROI.',
+    steps: [
+      'Vor dem nächsten Rollout: Definieren Sie 2-3 Metriken (Durchlaufzeit, Fehlerquote, Nutzerzufriedenheit).',
+      '2–4 Wochen messen, bevor das Tool eingeführt wird.',
+      'Nach Rollout monatlich gleiche Metriken vergleichen. Dokumentation in 1-seitigem Report.',
+    ],
+    pitfall: 'Zu viele Metriken = keine. Lieber 2-3 sauber als 10 ungenau.',
+  },
+  'RO-2': {
+    title: 'ROI-Dashboard monatlich',
+    shiftPhase: 'T', effort: 'Mittel', source: 'SHIFT Framework · Phase T',
+    body: 'Nach dem Rollout verschwindet das ROI-Thema oft. Ein einfaches Dashboard, monatlich aktualisiert, hält den Wertnachweis lebendig: Gesparte Stunden × Stundensatz + vermiedene Fehlerkosten = Ihr KI-ROI.',
+    why: 'SHIFT Phase T warnt vor "Rückbildung nach Projektende". Monatliches Tracking verhindert, dass KI still stirbt.',
+    steps: [
+      'Erstellen Sie eine einfache Excel-Vorlage (oder BI-Dashboard): Use Case | Gesparte h/Monat | Stundensatz | EUR-Nutzen.',
+      'Verantwortung für die monatliche Aktualisierung klar verteilen.',
+      'Quartalsweise an die Geschäftsleitung reporten — auch wenn Werte niedrig sind.',
+    ],
+    pitfall: 'Cherrypicking (nur gute Zahlen zeigen) zerstört das Dashboard. Transparenz auch bei schlechten Werten.',
+  },
+  'RO-3': {
+    title: 'Abbruch-Kriterien vor Pilotstart',
+    shiftPhase: 'H', effort: 'Niedrig', source: 'SHIFT Framework · Phase H · Pilothölle vermeiden',
+    body: 'Pilote sterben selten — sie siechen jahrelang dahin. Lösung: Vor Pilotstart klar vereinbaren, ab wann Sie ihn abbrechen würden. "Wenn in 3 Monaten nicht 100 Std/Monat gespart sind, drehen wir ab."',
+    why: 'SHIFT "Pilothölle" ist ein dokumentiertes Muster: Ohne Abbruchkriterien laufen Piloten weiter aus Gesichtswahrung. Vorab-Vereinbarung macht Abbrechen politisch möglich.',
+    steps: [
+      'Beim nächsten Pilotstart: Vor Beginn drei Fragen beantworten — Was müsste passieren, damit wir abbrechen? Bis wann? Wer entscheidet?',
+      'Dokumentieren und allen Stakeholdern zeigen.',
+      'Bei Stichtag: Entscheiden. Kein Spiel "nur noch ein Monat".',
+    ],
+    pitfall: 'Abbruch-Kriterien, die nur Sie kennen, wirken nicht. Sie müssen mit dem Team vereinbart sein.',
+  },
+
+  // C3 · Daten & Compliance
+  'DC-1': {
+    title: 'KI-Register anlegen',
+    shiftPhase: 'F', effort: 'Mittel', source: 'EU AI Act · Art. 6 Risikoklassifizierung',
+    body: 'Ein zentrales Verzeichnis aller KI-Systeme im Unternehmen — offizielle und inoffizielle. Klassifiziert nach Risiko (minimal, limited, high-risk, prohibited). Der erste Schritt der EU-AI-Act-Compliance und Grundlage für Organhaftung.',
+    why: 'EU AI Act: Ein KI-Register ist rechtlich zwingend. Ohne Übersicht kann die Geschäftsführung bei Verstößen persönlich haften.',
+    steps: [
+      'Diese Woche: Einfache Excel-Liste anlegen — System, Hersteller, Zweck, Nutzergruppe.',
+      'In 4 Wochen: Alle bekannten Tools erfasst, plus inoffizielle (Shadow AI) durch offene Team-Abfrage.',
+      'Risikoklassifizierung je System mit DSB oder externer Beratung.',
+    ],
+    pitfall: 'Das Register wird oft "als perfekte Tabelle" geplant und nie gestartet. 80%-Version sofort schlägt 100%-Version in 6 Monaten.',
+  },
+  'DC-2': {
+    title: 'AI Literacy Programm',
+    shiftPhase: 'H / F', effort: 'Hoch', source: 'EU AI Act · Art. 4 AI Literacy',
+    body: 'Seit Feb 2025 gesetzlich verpflichtend: Alle Mitarbeitenden, die KI nutzen, müssen nachweislich "AI Literacy" haben. Ein strukturiertes Programm von 2–8 Stunden (je nach Rolle) erfüllt die Pflicht und macht gleichzeitig das Team kompetenter.',
+    why: 'Art. 4 EU AI Act ist harte Compliance, nicht Soft Skill. Fehlende AI Literacy kann Bußgelder auslösen.',
+    steps: [
+      'Identifizieren Sie Rollengruppen: Basis-Nutzer, Power-User, Entscheider. Je andere Literacy-Tiefe.',
+      'Entwickeln oder einkaufen: 2-h-Basis-Modul, 4-h-Power-User-Modul, 8-h-Entscheider-Modul.',
+      'Bis 2025 Q4: Mind. 80% Erfassung. Nachweisbar per Zertifikat.',
+    ],
+    pitfall: 'Generische Online-Kurse erfüllen die Pflicht formal, aber wirken nicht. Unternehmens-spezifische Cases wirken besser.',
+  },
+  'DC-3': {
+    title: 'Shadow-AI-Amnestie',
+    shiftPhase: 'S / H', effort: 'Niedrig', source: 'Shadow IT Management · offene Inventur',
+    body: 'Mitarbeitende nutzen sowieso private KI-Tools. Statt Verbot: Eine 4-Wochen-Amnestie ausrufen — "Sagt offen, was ihr nutzt, wir sanktionieren nicht." Ergebnis: ein realistisches Bild, auf dem Sie echte Governance bauen können.',
+    why: 'Shadow IT lebt von Angst vor Konsequenz. Amnestie bricht das — und zeigt, dass die Nutzung oft nützlich und einfach formalisierbar ist.',
+    steps: [
+      'Ankündigung an alle: "In den nächsten 4 Wochen sammeln wir offen, welche KI-Tools genutzt werden. Keine Sanktionen, nur Inventur."',
+      'Einfaches Google-Forms/Excel: Tool, Zweck, Häufigkeit, Nutzen.',
+      'Nach 4 Wochen: Auswerten und entscheiden — welche Tools offiziell zulassen, welche kritisch prüfen, welche verbieten (mit Alternative).',
+    ],
+    pitfall: 'Wer Amnestie bricht und später doch sanktioniert, zerstört auf Jahre die Offenheit.',
+  },
+
+  // C4 · Governance & Ownership
+  'GV-1': {
+    title: 'Betriebsrat früh einbeziehen',
+    shiftPhase: 'S / H', effort: 'Niedrig', source: 'Hampel · Sozialpartnerschaft | BetrVG',
+    body: 'In Deutschland ist der Betriebsrat kein Bremsklotz, sondern potenzieller Mitgestalter. Wenn Sie KI-Themen proaktiv zu Beginn einbringen — nicht am Ende — verwandeln Sie Widerstand in Partnerschaft.',
+    why: 'Hampel: Beteiligung mit echten Rechten verwandelt Widerstand in Verantwortung. Rechtlich: Mitbestimmungspflicht bei Tools, die Leistung/Verhalten überwachen (§ 87 Abs. 1 Nr. 6 BetrVG).',
+    steps: [
+      'Nächste Woche: Informelles Gespräch mit BR-Vorsitz über Ihre KI-Pläne. Ohne Agenda, nur Info.',
+      'Gemeinsame Betriebsvereinbarung: Rahmen für KI-Einsatz, Datennutzung, Mitarbeiterrechte.',
+      'BR-Vertretung im KI-Steuerkreis — nicht als Kontrolleur, sondern Mitentscheider.',
+    ],
+    pitfall: '"BR informieren" statt "BR einbeziehen" wird durchschaut und erzeugt Widerstand, den Sie vermeiden wollten.',
+  },
+  'GV-2': {
+    title: 'KI-Beauftragten benennen',
+    shiftPhase: 'F', effort: 'Mittel', source: 'ISO/IEC 42001 · AI Governance',
+    body: 'Eine klar benannte Person (halbtags für KMU) mit Mandat für KI-Koordination, Register-Pflege, Schulungsorganisation und BR-Abstimmung. Nicht DSB, nicht IT — ein eigener Kopf, der die Brücken baut.',
+    why: 'ISO 42001 und EU AI Act empfehlen eine dedizierte Rolle. Praxis: Fehlende Verantwortung = fehlende Fortschritte. Eine Person ist es, die Dinge vorantreibt.',
+    steps: [
+      'Stellenprofil definieren — kein IT-Profil, sondern Schnittstellenrolle (Kommunikation, Recht, Fachlichkeit).',
+      'Intern besetzen (meist besser) oder extern, mit 20-50% Kapazität je nach Größe.',
+      'Mandat schriftlich fixieren: Was darf der KI-Beauftragte entscheiden, was koordinieren, was nur empfehlen?',
+    ],
+    pitfall: 'KI-Beauftragter ohne Entscheidungsmandat ist ein Newsletter-Autor. Mit Mandat ist er Transformationsmotor.',
+  },
+  'GV-3': {
+    title: 'Integration in bestehende Compliance',
+    shiftPhase: 'F', effort: 'Mittel', source: 'ISO 27001 + ISO 42001 · Integriertes Management',
+    body: 'Statt KI als Extra-Management-System aufzubauen: KI-Risiken in vorhandene Strukturen einbinden — ISMS, DSGVO-Prozesse, Qualitätsmanagement. Synergien nutzen, nicht parallel pflegen.',
+    why: 'Isolierte KI-Management-Systeme werden im Mittelstand nicht gelebt. Integration schafft Effizienz und reduziert Organhaftungsrisiken.',
+    steps: [
+      'Inventur: Welche Management-Systeme existieren (ISO 9001, 27001, DSGVO-Prozesse)?',
+      'KI-Risiken in bestehende Risiko-Register einsortieren — nicht in ein neues.',
+      'Audit-Zyklen synchronisieren: Wenn ISMS geprüft wird, KI-Governance gleich mit.',
+    ],
+    pitfall: 'Integration ohne klare Ownership führt zu "niemand ist zuständig". Rollen explizit zuordnen.',
+  },
+
+  // C5 · Lernarchitektur
+  'LA-1': {
+    title: 'Fehlerbudgets einrichten',
+    shiftPhase: 'F / I', effort: 'Mittel', source: 'Hampel · Safe-to-Fail-Infrastruktur',
+    body: 'Pilotbudgets, die explizit scheitern dürfen. 10-30k EUR pro Experiment, gedeckelt, klare Ja/Nein-Entscheidung nach 3 Monaten. Das Team weiß: Hier darf man testen, ohne Firma zu gefährden.',
+    why: 'Hampel: Mut braucht strukturelle Deckung. Ohne Fehlerbudgets ist jedes Experiment eine persönliche Wette des Entscheiders. Mit Budget wird es Routine.',
+    steps: [
+      'Nächster Geschäftsplan: 3-5 "KI-Explorationsbudgets" à 10-30k mit festem Deckel.',
+      'Antragsverfahren: 1-Seiter, max. 1 Woche Entscheidung.',
+      'Nach Ablauf: Transparentes Ja/Nein. Gescheiterte Experimente werden geehrt, nicht versteckt.',
+    ],
+    pitfall: 'Wenn gescheiterte Experimente doch persönlich vorgeworfen werden, tötet das die Kultur sofort. Stringente Einhaltung der Regel ist alles.',
+  },
+  'LA-2': {
+    title: 'After-Action Reviews',
+    shiftPhase: 'F / T', effort: 'Niedrig', source: 'US Army · AAR-Methodik',
+    body: 'Nach jedem KI-Piloten (egal ob erfolgreich) ein 60-Minuten-AAR: Was war geplant? Was passierte? Warum? Was nehmen wir mit? Ohne Schuldzuweisung — mit konsequenter Lerndokumentation.',
+    why: 'US Army-Forschung: AARs sind die wirksamste Lern-Praxis für Teams unter Unsicherheit. Bezug zum Thema: Ohne AAR wiederholen Teams denselben "Workslop" unbemerkt.',
+    steps: [
+      'Nach nächstem Pilotabschluss: 60-Minuten-AAR ansetzen — mit allen Beteiligten.',
+      '4-Fragen-Format durchspielen, Moderation durch neutralen Dritten.',
+      'Lerndokumentation zentral ablegen — in einem Team-Wiki, nicht im Intranet-Friedhof.',
+    ],
+    pitfall: 'AARs, in denen jemand Schuld-Rituale betreibt, funktionieren nicht. Moderation ist Voraussetzung.',
+  },
+  'LA-3': {
+    title: 'Ambidextrie durch 70/20/10',
+    shiftPhase: 'F / T', effort: 'Mittel', source: 'O\'Reilly & Tushman · Organizational Ambidexterity',
+    body: 'Balance herstellen: 70% KI-Kapazität für Exploitation (bewährte Use Cases optimieren), 20% Exploration (neue Anwendungen), 10% Transformation (strategische Sprünge). Nicht alles auf Quick Wins, nicht alles auf Moonshots.',
+    why: 'O\'Reilly & Tushman: Organisationen, die nur eines davon tun, verlieren langfristig. Balance macht Resilienz.',
+    steps: [
+      'Übersicht aller laufenden KI-Aktivitäten: Exploitation / Exploration / Transformation einsortieren.',
+      'Aktuelle Verteilung anschauen — meist zu viel in einem Topf.',
+      'Kapazität umlenken, bis ungefähr 70/20/10 erreicht ist. Quartalsweise überprüfen.',
+    ],
+    pitfall: 'Starre 70/20/10-Gewichtung passt nicht für jede Branche/Reifegrad. Prinzip behalten, Zahlen anpassen.',
+  },
+};
+
+// Mapping: Dimension-ID -> Liste der Interventions-IDs (für Deep-Check-Routing)
+const DIM_INTERVENTIONS = {
+  sinnverlust:        ['SV-1','SV-2','SV-3','SV-4'],
+  kompetenzangst:     ['KA-1','KA-2','KA-3','KA-4'],
+  fuehrungsvakuum:    ['FV-1','FV-2','FV-3','FV-4'],
+  tempostress:        ['TS-1','TS-2','TS-3','TS-4'],
+  entscheidungsangst: ['EA-1','EA-2','EA-3'],
+  eigenverantwortung: ['EV-1','EV-2','EV-3'],
+  chancenbewusstsein: ['CB-1','CB-2','CB-3'],
+  strategische_klarheit: ['SK-1','SK-2','SK-3'],
+  roi:                ['RO-1','RO-2','RO-3'],
+  daten_compliance:   ['DC-1','DC-2','DC-3'],
+  governance:         ['GV-1','GV-2','GV-3'],
+  lernarchitektur:    ['LA-1','LA-2','LA-3'],
+};
+
+const PHASE_INTERVENTIONS = {
+  VOR_SENSE: { primary: ['OR-1'], secondary: ['SV-4','FV-4'] },
+  SENSE:     { primary: ['OR-1','SV-4','FV-4'], secondary: ['KA-4'] },
+  HUMAN:     { primary: ['FV-1', 'KA-1', 'KA-4', 'SV-2'], secondary: ['FV-4', 'KA-3'] },
+  IGNITE:    { primary: ['KA-2', 'TS-4', 'SV-1', 'SV-3'], secondary: ['SV-2', 'KA-1'] },
+  FRAME:     { primary: ['TS-1', 'TS-2', 'FV-2', 'KA-3'], secondary: ['TS-3', 'FV-3'] },
+  THRIVE:    { primary: ['FV-3'], note: 'Minimalinvasiv – Führung tritt zurück.' },
+};
+
+/* ===================== SCORING & MAPPING ===================== */
+
+function computeScores(answers) {
+  const dimScore = (items) => {
+    const vals = items.map(it => answers[it.id]);
+    if (vals.some(v => !v)) return null;
+    return Math.round(vals.reduce((a,b)=>a+b, 0) * 100 / (vals.length * 5));
+  };
+  const scores = {};
+  DIMENSIONS.forEach(d => {
+    const s = dimScore(d.items);
+    if (s !== null) scores[d.id] = s;
+  });
+  // Gesamt = Durchschnitt der Quick-Check-Dimensionen (Block A, erste 4) für SHIFT-Mapping-Kompatibilität
+  const quickScores = ['sinnverlust','kompetenzangst','fuehrungsvakuum','tempostress']
+    .map(id => scores[id]).filter(s => s !== undefined);
+  scores.gesamt = quickScores.length === 4 ? Math.round(quickScores.reduce((a,b)=>a+b,0) / 4) : null;
+  return scores;
+}
+
+function zone(score) {
+  if (score === null || score === undefined) return 'grey';
+  if (score < 34) return 'green';
+  if (score < 67) return 'yellow';
+  return 'red';
+}
+
+function barrierPoint(scores) {
+  // Nur aus den 4 Quick-Check-Dim für SHIFT-Mapping-Kompatibilitaet
+  const quickIds = ['sinnverlust','kompetenzangst','fuehrungsvakuum','tempostress'];
+  const entries = quickIds
+    .map(id => [id, scores[id]])
+    .filter(([, v]) => v !== undefined);
+  entries.sort((a, b) => b[1] - a[1]);
+  return entries[0] ? entries[0][0] : null;
+}
+
+function topDimension(scores) {
+  // Haechster Score ueber ALLE Dimensionen (inkl. Deep) fuer Display
+  const entries = Object.entries(scores).filter(([k]) => k !== 'gesamt' && typeof scores[k] === 'number');
+  entries.sort((a, b) => b[1] - a[1]);
+  return entries[0] ? entries[0][0] : null;
+}
+
+function mapShift(scores, ctx) {
+  // Rule 1: Vor SENSE
+  if (ctx.C1 === 'kein-einsatz' && ctx.C4 === 'keine') return 'VOR_SENSE';
+
+  // Rule 2: THRIVE (M7 — Block-Avg statt Per-Dim, realistischer)
+  const quickVals = ['sinnverlust','kompetenzangst','fuehrungsvakuum','tempostress']
+    .map(k => scores[k]).filter(v => v != null);
+  const quickAvg = quickVals.length ? quickVals.reduce((a,b) => a+b, 0) / quickVals.length : 0;
+  if (quickAvg < 34 && ctx.C1 === 'integriert' && ctx.C3 === 'geregelt' && ctx.C4 === 'systematisch') return 'THRIVE';
+
+  const bp = barrierPoint(scores);
+  const bpScore = scores[bp];
+  const anyDimRisk = scores.sinnverlust >= 34 || scores.kompetenzangst >= 34 || scores.fuehrungsvakuum >= 34 || scores.tempostress >= 34;
+
+  // M1: SENSE priorisiert vor HUMAN bei fruehen Einsatz-Stadien
+  // Wenn C1 = kein-einsatz oder explorativ UND irgendeine Dim >= 34 → SENSE
+  if ((ctx.C1 === 'kein-einsatz' || ctx.C1 === 'explorativ') && anyDimRisk) return 'SENSE';
+
+  // Rule: FRAME
+  if (bp === 'tempostress' && bpScore >= 34 && (ctx.C1 === 'etabliert' || ctx.C1 === 'integriert')) return 'FRAME';
+
+  // Rule: IGNITE
+  if (bp === 'sinnverlust' && bpScore >= 34 && (ctx.C1 === 'etabliert' || ctx.C1 === 'integriert')
+      && (ctx.C2 === 'automation' || ctx.C2 === 'unklar')) return 'IGNITE';
+
+  // Rule: HUMAN — verlangt nun explizit C1 ∈ {etabliert, integriert}
+  if ((bp === 'kompetenzangst' || bp === 'fuehrungsvakuum') && bpScore >= 34
+      && (ctx.C1 === 'etabliert' || ctx.C1 === 'integriert')
+      && (['fehlend','restriktiv','informell'].includes(ctx.C3) || ['keine','autodidaktisch'].includes(ctx.C4))) return 'HUMAN';
+
+  // Fallback: HUMAN wenn irgendwas brennt, sonst SENSE (Standort klaeren)
+  if (anyDimRisk) return 'HUMAN';
+  return 'SENSE';
+}
+
+// Fix B: Kontext-sensitive Auswahl innerhalb einer Dim-Intervention-Liste
+// Macht alle 3+ Varianten jeder Dim erreichbar — nicht nur die ersten 2
+function selectDimInterventions(dim, ctx, phase) {
+  const pool = DIM_INTERVENTIONS[dim] || [];
+  if (pool.length <= 2) return pool.slice(0, 2);
+  if (dim === 'sinnverlust') {
+    if (ctx.C2 === 'automation') return [pool[3], pool[0]];              // SV-4, SV-1
+    if (ctx.C2 === 'augmentation' || ctx.C2 === 'beides') return [pool[0], pool[2]];  // SV-1, SV-3
+    return [pool[0], pool[1]];                                           // SV-1, SV-2
+  }
+  if (dim === 'kompetenzangst') {
+    if (ctx.C4 === 'systematisch') return [pool[2], pool[3]];            // KA-3, KA-4
+    if (ctx.C4 === 'punktuell') return [pool[1], pool[3]];               // KA-2, KA-4
+    return [pool[0], pool[1]];                                           // KA-1, KA-2
+  }
+  if (dim === 'fuehrungsvakuum') {
+    if (phase === 'FRAME' || ctx.C1 === 'integriert') return [pool[1], pool[2]]; // FV-2, FV-3
+    if (phase === 'SENSE' || phase === 'VOR_SENSE') return [pool[3], pool[0]]; // FV-4, FV-1
+    if (ctx.C3 === 'informell' || ctx.C3 === 'geregelt') return [pool[0], pool[1]]; // FV-1, FV-2
+    return [pool[0], pool[3]];                                           // FV-1, FV-4
+  }
+  if (dim === 'tempostress') {
+    if (ctx.C1 === 'integriert') return [pool[1], pool[0]];              // TS-2, TS-1
+    if (phase === 'IGNITE' || ctx.C2 === 'beides') return [pool[3], pool[0]]; // TS-4, TS-1
+    if (ctx.C3 === 'geregelt' || ctx.C3 === 'informell') return [pool[2], pool[0]]; // TS-3, TS-1
+    return [pool[0], pool[1]];                                           // TS-1, TS-2
+  }
+  if (dim === 'entscheidungsangst') {
+    if (ctx.C3 === 'restriktiv' || ctx.C3 === 'geregelt') return [pool[0], pool[2]];  // EA-1, EA-3
+    if (ctx.C1 === 'integriert') return [pool[1], pool[2]];              // EA-2, EA-3
+    return [pool[0], pool[1]];                                           // EA-1, EA-2
+  }
+  if (dim === 'eigenverantwortung') {
+    if (ctx.C3 === 'fehlend' || ctx.C3 === 'restriktiv') return [pool[1], pool[0]]; // EV-2, EV-1
+    if (ctx.C4 === 'systematisch') return [pool[2], pool[0]];            // EV-3, EV-1
+    return [pool[0], pool[2]];                                           // EV-1, EV-3
+  }
+  if (dim === 'chancenbewusstsein') {
+    if (ctx.C2 === 'automation') return [pool[0], pool[1]];              // CB-1, CB-2
+    if (ctx.C1 === 'kein-einsatz' || ctx.C1 === 'explorativ') return [pool[2], pool[0]]; // CB-3, CB-1
+    return [pool[1], pool[2]];                                           // CB-2, CB-3
+  }
+  if (dim === 'strategische_klarheit') {
+    if (ctx.C1 === 'integriert') return [pool[1], pool[2]];              // SK-2, SK-3
+    if (ctx.C2 === 'automation') return [pool[2], pool[0]];              // SK-3, SK-1
+    return [pool[0], pool[1]];                                           // SK-1, SK-2
+  }
+  if (dim === 'roi') {
+    if (ctx.C4 === 'systematisch' || ctx.C4 === 'punktuell') return [pool[1], pool[2]]; // RO-2, RO-3
+    if (ctx.C1 === 'integriert') return [pool[2], pool[0]];              // RO-3, RO-1
+    return [pool[0], pool[1]];                                           // RO-1, RO-2
+  }
+  if (dim === 'daten_compliance') {
+    if (ctx.C3 === 'fehlend') return [pool[0], pool[2]];                 // DC-1, DC-3
+    if (ctx.C4 === 'keine' || ctx.C4 === 'autodidaktisch') return [pool[1], pool[0]]; // DC-2, DC-1
+    return [pool[0], pool[1]];                                           // DC-1, DC-2
+  }
+  if (dim === 'governance') {
+    if (ctx.C3 === 'fehlend') return [pool[1], pool[0]];                 // GV-2, GV-1
+    if (ctx.C3 === 'geregelt' || ctx.C3 === 'informell') return [pool[2], pool[0]]; // GV-3, GV-1
+    return [pool[0], pool[1]];                                           // GV-1, GV-2
+  }
+  if (dim === 'lernarchitektur') {
+    if (ctx.C1 === 'integriert') return [pool[1], pool[2]];              // LA-2, LA-3
+    if (ctx.C3 === 'restriktiv') return [pool[2], pool[0]];              // LA-3, LA-1
+    return [pool[0], pool[1]];                                           // LA-1, LA-2
+  }
+  return pool.slice(0, 2);
+}
+
+function buildRecommendations(phase, scores, ctx, mode) {
+  let ids = [];
+
+  // Context overrides zuerst berechnen — werden von M6 genutzt
+  const overrides = [];
+  if (scores.kompetenzangst >= 34 && ctx.C1 === 'kein-einsatz') {
+    overrides.push({ type: 'warn', key: 'angst-ohne-substanz', text: 'Angst ohne Substanz: Ihre Kompetenzangst-Werte deuten auf ein Narrativ-Problem hin, nicht auf einen Schulungsbedarf. Sinn vor Upskilling.' });
+  }
+  if (barrierPoint(scores) === 'sinnverlust' && ctx.C2 === 'automation') {
+    overrides.push({ type: 'info', key: 'automation-narrativ', text: 'Das Automation-Narrativ ist die wahrscheinlichste Wurzel der Sinnverlust-Werte. SV-4 sollte Prioritaet 1 sein.' });
+  }
+  if (barrierPoint(scores) === 'tempostress' && ctx.C1 === 'explorativ') {
+    overrides.push({ type: 'flag', key: 'projektion', text: 'Tempo-Stress bei geringem Einsatz deutet auf Projektion hin. Pruefen Sie: Messen Sie das Tempo an Ihrem Team oder an externen Erzaehlungen?' });
+  }
+
+  if (mode === 'deep') {
+    // Deep-Check: bis zu 5 Empfehlungen — M8 Block-Priorisierung nach Top-Score
+    const byDim = Object.entries(scores).filter(([k, v]) => k !== 'gesamt' && typeof v === 'number' && DIM_INTERVENTIONS[k]);
+    byDim.sort((a, b) => b[1] - a[1]);
+
+    const topA = byDim.find(([k]) => ['sinnverlust','kompetenzangst','fuehrungsvakuum','tempostress','entscheidungsangst'].includes(k));
+    const topB = byDim.find(([k]) => ['eigenverantwortung','chancenbewusstsein'].includes(k));
+    const topC = byDim.find(([k]) => ['strategische_klarheit','roi','daten_compliance','governance','lernarchitektur'].includes(k));
+
+    // M8 + Fix B: Bloecke nach Score sortieren + kontext-sensitive Variante
+    const slots = [];
+    if (topA && topA[1] >= 34) slots.push({ dim: topA, recs: 2 });
+    if (topB && topB[1] >= 34) slots.push({ dim: topB, recs: 1 });
+    if (topC && topC[1] >= 34) slots.push({ dim: topC, recs: 2 });
+    slots.sort((a, b) => b.dim[1] - a.dim[1]);
+    for (const s of slots) {
+      const selected = selectDimInterventions(s.dim[0], ctx, phase);
+      ids.push(...selected.slice(0, s.recs));
+    }
+
+    if (ids.length < 3) {
+      const phaseData = PHASE_INTERVENTIONS[phase] || {};
+      ids = [...ids, ...(phaseData.primary || [])];
+    }
+
+    // M9: Override-Promotion auch im Deep-Mode
+    const promote = (t) => {
+      if (!ids.includes(t)) ids = [t, ...ids.slice(0, -1)];
+      else ids = [t, ...ids.filter(x => x !== t)];
+    };
+    if (overrides.some(o => o.key === 'automation-narrativ')) promote('SV-4');
+    if (overrides.some(o => o.key === 'angst-ohne-substanz')) promote('FV-4');
+
+    // Fix A: OR-1 fuer VOR_SENSE/SENSE an Prio 1 injizieren
+    if ((phase === 'VOR_SENSE' || phase === 'SENSE') && !ids.includes('OR-1')) {
+      ids = ['OR-1', ...ids];
+    }
+
+    ids = [...new Set(ids)].slice(0, 5);
+  } else {
+    // Quick-Check: M3 (Barrier-sensitiv) + M4 (Multi-Barrier) + M6 (Override-Priorisierung)
+    const phaseData = PHASE_INTERVENTIONS[phase] || {};
+    const quickDims = ['sinnverlust','kompetenzangst','fuehrungsvakuum','tempostress'];
+    const redDims = quickDims.filter(d => (scores[d] || 0) >= 67);
+    const bp = barrierPoint(scores);
+
+    if (phase === 'VOR_SENSE' || phase === 'SENSE' || phase === 'THRIVE') {
+      // Fruehe/Reife Phasen: Phasen-Empfehlungen dominieren (Kontext vor Barrier)
+      ids = [...(phaseData.primary || [])];
+      if (ids.length < 3 && phaseData.secondary) ids = [...ids, ...phaseData.secondary];
+    } else if (redDims.length >= 2) {
+      // M4: Multi-Barrier — je 1 aus jedem Rot-Dim (kontext-sensitiv) + 1 Phasenstandard
+      redDims.sort((a, b) => scores[b] - scores[a]);
+      for (const d of redDims.slice(0, 3)) {
+        const sel = selectDimInterventions(d, ctx, phase);
+        if (sel[0]) ids.push(sel[0]);
+      }
+      const phaseStd = (phaseData.primary || []).find(p => !ids.includes(p));
+      if (phaseStd) ids.push(phaseStd);
+    } else {
+      // M3: Barrier-sensitiv (kontext-sensitiv) — 2 aus Barrier-Dim + 1 aus Phase
+      ids = selectDimInterventions(bp, ctx, phase).slice(0, 2);
+      const phaseStd = (phaseData.primary || []).find(p => !ids.includes(p));
+      if (phaseStd) ids.push(phaseStd);
+      if (ids.length < 3) {
+        ids = [...ids, ...(phaseData.primary || []).filter(p => !ids.includes(p))];
+      }
+    }
+
+    // M6: Override-gesteuerte Priorisierung
+    const promoteIfPresent = (targetId) => {
+      if (!ids.includes(targetId)) {
+        // Falls Ziel-Intervention nicht in Liste, hinzufuegen und davor die letzte entfernen
+        ids = [targetId, ...ids.slice(0, -1)];
+      } else {
+        // Ziel ist drin, nach vorn sortieren
+        ids = [targetId, ...ids.filter(x => x !== targetId)];
+      }
+    };
+    if (overrides.some(o => o.key === 'automation-narrativ')) promoteIfPresent('SV-4');
+    if (overrides.some(o => o.key === 'angst-ohne-substanz')) promoteIfPresent('FV-4');
+
+    // Dedupe + limit
+    ids = [...new Set(ids)].slice(0, redDims.length >= 2 ? 4 : 3);
+  }
+
+  return { ids, overrides };
+}
+
+/* ===================== COMPONENTS ===================== */
+
+function Brand({ modeLabel }) {
+  return h('div', { className: 'brand-header' },
+    h('div', { className: 'dot' }),
+    h('div', null, 'Mindshift AI'),
+    h('div', { className: 'tag' }, modeLabel || 'KI-Team-Audit')
+  );
+}
+
+function ProgressBar({ step, totalSteps }) {
+  const pct = Math.max(0, Math.min(100, (step / totalSteps) * 100));
+  return h('div', { className: 'progress' },
+    h('div', { className: 'progress-bar', style: { width: pct + '%' } })
+  );
+}
+
+function SingleChoice({ question, options, value, onChange }) {
+  return h('div', { className: 'fade-in' },
+    h('div', { className: 'question' }, question),
+    h('div', { className: 'options' },
+      options.map(opt => h('button', {
+        key: opt.value,
+        className: 'option' + (value === opt.value ? ' selected' : ''),
+        onClick: () => onChange(opt.value),
+        type: 'button',
+      },
+        h('div', { className: 'dot-box' }),
+        h('span', null, opt.label)
+      ))
+    )
+  );
+}
+
+function LikertBlock({ dimension, values, onChange }) {
+  return h('div', { className: 'fade-in' },
+    h('div', { className: 'kicker' }, 'Ihre Einschätzung'),
+    h('div', { className: 'question' }, dimension.intro),
+    ...dimension.items.map(item => h('div', { className: 'likert-row', key: item.id },
+      h('div', { className: 'likert-q' }, item.text),
+      h('div', { className: 'likert-scale' },
+        [1,2,3,4,5].map(n => h('button', {
+          key: n,
+          className: 'likert-btn' + (values[item.id] === n ? ' selected' : ''),
+          onClick: () => onChange(item.id, n),
+          type: 'button',
+        }, n))
+      ),
+      h('div', { className: 'likert-labels' },
+        h('span', null, 'Trifft gar nicht zu'),
+        h('span', null, 'Trifft voll zu')
+      )
+    ))
+  );
+}
+
+function ShiftTrack({ current }) {
+  const phases = ['VOR_SENSE','SENSE','HUMAN','IGNITE','FRAME','THRIVE'];
+  const currentIdx = SHIFT_PHASES[current].index;
+  const totalWidth = phases.length - 1;
+  const fillPct = (currentIdx / totalWidth) * 100;
+  return h('div', { className: 'shift-track' },
+    h('div', { className: 'shift-rail' },
+      h('div', { className: 'shift-fill', style: { width: fillPct + '%' } }),
+      phases.map((p, i) => {
+        const phaseData = SHIFT_PHASES[p];
+        const state = i < currentIdx ? 'passed' : (i === currentIdx ? 'current' : 'ahead');
+        return h('div', {
+          key: p,
+          className: 'shift-phase ' + state,
+          style: { left: `${(i / totalWidth) * 100}%` }
+        },
+          h('div', { className: 'phase-dot' }),
+          h('div', { className: 'phase-label' }, phaseData.shortLabel)
+        );
+      })
+    )
+  );
+}
+
+function DimBar({ label, score, zoneCls }) {
+  const zoneLabel = { green: 'Unauffällig', yellow: 'Aufmerksamkeit', red: 'Kritisch' }[zoneCls] || '-';
+  return h('div', { className: 'dim-bar-row' },
+    h('div', { className: 'dim-label' }, label),
+    h('div', { className: 'bar-track' },
+      h('div', { className: 'bar-fill ' + zoneCls, style: { width: score + '%' } })
+    ),
+    h('div', { className: 'dim-score' }, score),
+    h('div', { className: 'zone-label ' + zoneCls }, zoneLabel)
+  );
+}
+
+function Recommendation({ ivId, number, isPrimary, why }) {
+  const iv = INTERVENTIONS[ivId];
+  if (!iv) return null;
+  const numberBadge = `❶❷❸❹❺`[number-1] || number;
+  return h('div', { className: 'recommendation' + (isPrimary ? ' primary' : '') , style: isPrimary ? { padding: 36, background: 'linear-gradient(165deg, var(--white), var(--cream))' } : {} },
+    isPrimary && h('div', { style: {
+      display: 'inline-block',
+      padding: '6px 14px',
+      background: 'var(--navy)',
+      color: 'var(--gold-light)',
+      borderRadius: '100px',
+      fontSize: '0.7rem',
+      fontWeight: 700,
+      letterSpacing: '0.1em',
+      textTransform: 'uppercase',
+      marginBottom: 16,
+    } }, 'Priorität 1 · Ihr stärkster Hebel'),
+    h('div', { className: 'rec-header' },
+      h('span', { className: 'rec-number', style: isPrimary ? { fontSize: '1.6rem' } : {} }, numberBadge),
+      h('span', { className: 'rec-title', style: isPrimary ? { fontSize: '1.45rem' } : {} }, iv.title)
+    ),
+    h('div', { className: 'rec-meta' },
+      h('span', null, `SHIFT-Phase: ${iv.shiftPhase}`),
+      h('span', null, `Aufwand: ${iv.effort}`)
+    ),
+    h('div', { className: 'rec-meta', style: { color: 'var(--gold-dark)', marginTop: -8, marginBottom: 16 } },
+      h('span', null, `📚  ${iv.source}`)
+    ),
+    h('p', { className: 'rec-body' }, iv.body),
+    // Warum dieser in Priorität 1
+    isPrimary && why && h('div', { style: {
+      background: 'var(--navy)',
+      color: 'var(--white)',
+      padding: '18px 22px',
+      borderRadius: 'var(--radius)',
+      marginBottom: 20,
+      fontSize: '0.95rem',
+      lineHeight: 1.55,
+    } },
+      h('strong', { style: { color: 'var(--gold-light)', display: 'block', marginBottom: 6, fontSize: '0.76rem', letterSpacing: '0.1em', textTransform: 'uppercase' } }, 'Warum gerade diese Empfehlung'),
+      why
+    ),
+    // Why-line für nicht-primäre Empfehlungen
+    !isPrimary && why && h('div', { className: 'rec-why' }, why),
+    // Schritte mit Zeithorizont bei Priorität 1
+    isPrimary ? h('div', { style: { marginBottom: 16 } },
+      h('div', { style: { fontSize: '0.76rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold-dark)', marginBottom: 12 } }, 'Ihre konkreten Schritte'),
+      ['Innerhalb 7 Tagen', 'Innerhalb 30 Tagen', 'Innerhalb 90 Tagen'].map((label, i) => h('div', {
+        key: i,
+        style: {
+          display: 'grid',
+          gridTemplateColumns: '150px 1fr',
+          gap: 16,
+          padding: '14px 0',
+          borderTop: i === 0 ? '1px solid var(--stone-100)' : 'none',
+          borderBottom: '1px solid var(--stone-100)',
+          alignItems: 'start',
+        }
+      },
+        h('div', { style: { fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--gold-dark)' } }, label),
+        h('div', { style: { color: 'var(--ink)', fontSize: '0.96rem', lineHeight: 1.5 } }, iv.steps[i] || '—')
+      ))
+    ) : h('ol', { className: 'rec-steps' },
+      iv.steps.map((s, i) => h('li', { key: i, 'data-step': i+1 }, s))
+    ),
+    h('div', { className: 'rec-pitfall' },
+      h('strong', null, 'Stolperstein: '),
+      iv.pitfall
+    )
+  );
+}
+
+function LeitfragenBlock({ phase, audience }) {
+  const sets = {
+    mindshift: {
+      HUMAN: [
+        'Wo spüren Sie als Führungskraft am deutlichsten, dass der Mindshift bei Ihrem Team noch fehlt?',
+        'Welche Ihrer letzten 3 Entscheidungen könnten das Automation-Narrativ verstärkt haben – ohne dass Sie es wollten?',
+        'Was wäre ein sichtbares Zeichen, an dem Sie in 3 Monaten erkennen würden: "Die HUMAN-Phase ist durch"?',
+        'Welche Ängste im Team vermuten Sie, haben Sie aber noch nicht direkt gehört?',
+        'Was halten Sie selbst gerade am meisten zurück, hier aktiver zu werden?',
+      ],
+      IGNITE: [
+        'Wo haben Sie in den letzten Wochen echte Begeisterung für KI im Team erlebt – und wo wurde sie nicht sichtbar?',
+        'Welche Quick Wins wären für Ihr Team realistisch umsetzbar, die Sie noch nicht ausprobiert haben?',
+        'Was müsste Ihr Team erleben, damit KI sich nicht mehr "auferlegt" anfühlt, sondern "gewählt"?',
+        'Welche Person in Ihrem Team könnte Vorbild für den IGNITE-Moment werden?',
+        'Wo könnten Sie selbst authentisch KI-Erfolg teilen – und wo würde es gestellt wirken?',
+      ],
+      FRAME: [
+        'Welche KI-Tools nutzt Ihr Team de facto und welche davon lösen dasselbe Problem?',
+        'Welche Leitplanken fehlen, und welche davon würden Sie selbst einhalten?',
+        'Wo könnten Sie Entscheidungen an das Team übergeben, ohne dass es Sie Ressourcen kostet?',
+        'Welches Tool würden Sie abschalten, wenn es keine politischen Folgen hätte?',
+        'Wie messen Sie aktuell, ob sich KI-Einsatz für Ihr Team lohnt – oder messen Sie es gar nicht?',
+      ],
+      SENSE: [
+        'Was wissen Sie über den KI-Stand Ihres Teams, was wissen Sie nicht?',
+        'Welche Informationsquelle (Gespräch, Daten, Beobachtung) würde Ihnen in den nächsten 4 Wochen am meisten helfen?',
+        'Welches der Themen Sinnverlust, Kompetenzangst, Führung, Tempo sehen Sie als das dringlichste – warum?',
+        'Was würden Sie als Erstes tun, wenn Sie wüssten, wo Ihr Team wirklich steht?',
+        'Wer in Ihrem Team wäre der beste Gesprächspartner für eine ehrliche Standort-Bestandsaufnahme?',
+      ],
+      VOR_SENSE: [
+        'Warum beschäftigt Sie das Thema KI-Team jetzt, nach zu zögerlicher Nutzung bisher?',
+        'Was müsste passieren, damit Ihre Mitarbeitenden KI als Chance statt als Bedrohung erleben?',
+        'Welche Erfahrungen aus früheren Veränderungsprojekten bringen Sie mit, die jetzt helfen?',
+        'Was wäre in 6 Monaten anders, wenn Sie heute den ersten Schritt machen?',
+        'Wer in Ihrer Organisation wäre ein Verbündeter für diesen Einstieg?',
+      ],
+      THRIVE: [
+        'Woran erkennen Sie, dass Ihr Team wirklich eigenständig lernt – und nicht nur den Anschein wahrt?',
+        'Wo sehen Sie als Führungskraft noch den Reflex, eingreifen zu wollen – obwohl es nicht mehr nötig ist?',
+        'Welche Form von Sparring würde Ihnen auf diesem Niveau noch etwas bringen?',
+        'Wo würden andere Organisationen von Ihnen lernen können?',
+        'Welche nächste Welle sehen Sie am Horizont – und ist Ihr Team darauf bereit?',
+      ],
+    },
+    team: {
+      HUMAN: [
+        'Was macht euch bei unserer KI-Nutzung gerade Sorgen – was sprechen wir in Meetings nicht aus?',
+        'Wo habt ihr das Gefühl, dass KI euch die Arbeit entwertet – nicht erleichtert?',
+        'Was würdet ihr anders machen, wenn ihr frei entscheiden könntet?',
+        'Woran erkennen wir, dass wir als Team gut mit KI arbeiten?',
+        'Was erwartet ihr von mir als Führungskraft in den nächsten 3 Monaten?',
+      ],
+      IGNITE: [
+        'Wann habt ihr zuletzt einen Moment gehabt, in dem KI euch wirklich geholfen hat – und wie ging es euch?',
+        'Welche Aufgabe hasst ihr gerade am meisten, die KI theoretisch übernehmen könnte?',
+        'Was müsste in den nächsten 4 Wochen passieren, damit ihr am Freitag sagt: "Das war gut"?',
+        'Wo habt ihr KI schon still genutzt, ohne es offen gemacht zu haben?',
+        'Welche eurer Stärken ist durch KI sichtbarer geworden – nicht ersetzt?',
+      ],
+      FRAME: [
+        'Welches Tool würdet ihr streichen, wenn ihr dürftet?',
+        'Wo widersprechen sich unsere Prioritäten – und wie gehen wir damit um?',
+        'Was verlangsamt euch gerade mehr, als es euch schneller macht?',
+        'Wer im Team sollte mehr Entscheidungsgewalt bekommen – und wofür?',
+        'Was müsste in unseren Abläufen sichtbar sein, damit wir sagen: Wir sind jetzt wirklich mit KI unterwegs?',
+      ],
+      SENSE: [
+        'Wie beschreibt ihr unsere aktuelle KI-Situation – in einem Satz?',
+        'Was funktioniert gut, was funktioniert nicht?',
+        'Wo seht ihr größten Handlungsbedarf?',
+        'Was würdet ihr als Erstes verändern, wenn ihr dürftet?',
+        'Womit hat bisher niemand angefangen, obwohl es alle für wichtig halten?',
+      ],
+      VOR_SENSE: [
+        'Was wisst ihr über KI – und was davon aus eigener Erfahrung?',
+        'Welche Sorgen bringt euch das Thema?',
+        'Welche Chancen seht ihr, wenn ihr ehrlich seid?',
+        'Wer in unserem Umfeld macht das schon und was könnten wir davon lernen?',
+        'Was müsste passieren, damit euer Bauchgefühl zum Thema kippt?',
+      ],
+      THRIVE: [
+        'Wo sind wir als Team am meisten gewachsen – wo steckt Potenzial, das wir nicht heben?',
+        'Was haben wir gelernt, das wir weitergeben könnten?',
+        'Wo wird es langweilig – und was brauchen wir als neue Herausforderung?',
+        'Wo stehen wir besser da als vergleichbare Teams – und wo überschätzen wir uns?',
+        'Was wäre für euch der nächste Schritt – und wer treibt ihn?',
+      ],
+    },
+  };
+  const questions = sets[audience]?.[phase] || sets[audience]?.HUMAN || [];
+  return h('div', { className: 'leitfragen' },
+    h('h4', null, audience === 'mindshift' ? 'Für ein Gespräch mit Mindshift' : 'Für ein Gespräch mit Ihrem Team'),
+    h('ol', null, questions.map((q, i) => h('li', { key: i }, q)))
+  );
+}
+
+/* ===================== MAIN APP ===================== */
+
+function App() {
+  const [mode, setMode] = useState(null);  // 'quick' | 'deep'
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [variant, setVariant] = useState(null);
+  const [email, setEmail] = useState('');
+
+  // Dimensions for current mode
+  const activeDims = mode === 'deep' ? DIMENSIONS : QUICK_DIMENSIONS;
+  const numDimSteps = activeDims.length;
+  // Steps: 0 welcome, 1 mode-already-chosen, 2 C1, 3..N Likert dims, N+1 Context end, N+2 Variant, N+3 Results
+  // Structure: step 0 = welcome/mode-choice, step 1 = C1, step 2..(1+numDims) = likert dims
+  // step 2+numDims = C2-C4, step 3+numDims = variant, step 4+numDims = results
+  const LIKERT_START = 2;
+  const CTX_END_STEP = LIKERT_START + numDimSteps;    // C2-C4
+  const EMAIL_STEP = mode === 'deep' ? CTX_END_STEP + 1 : null;  // email only for deep
+  const VARIANT_STEP = mode === 'deep' ? CTX_END_STEP + 2 : CTX_END_STEP + 1;
+  const RESULTS_STEP = VARIANT_STEP + 1;
+  const TOTAL_STEPS = RESULTS_STEP;
+
+  const update = (key, val) => setAnswers(a => ({ ...a, [key]: val }));
+
+  const canProceed = (() => {
+    if (step === 0) return true;
+    if (step === 1) return !!answers.C1;
+    if (step >= LIKERT_START && step < CTX_END_STEP) {
+      const dim = activeDims[step - LIKERT_START];
+      return dim.items.every(it => answers[it.id]);
+    }
+    if (step === CTX_END_STEP) return !!answers.C2 && !!answers.C3 && !!answers.C4;
+    if (step === EMAIL_STEP) return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email === 'skip';
+    if (step === VARIANT_STEP) return !!variant;
+    return true;
+  })();
+
+  const scores = useMemo(() => step >= CTX_END_STEP ? computeScores(answers) : null, [answers, step, CTX_END_STEP]);
+  const ctx = { C1: answers.C1, C2: answers.C2, C3: answers.C3, C4: answers.C4 };
+  const phase = scores && scores.gesamt !== null ? mapShift(scores, ctx) : null;
+  const bp = scores && scores.gesamt !== null ? barrierPoint(scores) : null;
+  const recs = phase ? buildRecommendations(phase, scores, ctx, mode) : null;
+
+  // Deep-Check: Block-Scores (A, B, C)
+  const blockScores = useMemo(() => {
+    if (mode !== 'deep' || step < CTX_END_STEP) return null;
+    const score = (dimIds) => {
+      const dims = DIMENSIONS.filter(d => dimIds.includes(d.id));
+      const vals = [];
+      dims.forEach(d => d.items.forEach(it => {
+        if (answers[it.id]) vals.push(answers[it.id]);
+      }));
+      if (vals.length === 0) return 0;
+      return Math.round(vals.reduce((a,b) => a+b, 0) * 100 / (vals.length * 5));
+    };
+    return {
+      A: score(['sinnverlust','kompetenzangst','fuehrungsvakuum','tempostress','entscheidungsangst']),
+      B: score(['eigenverantwortung','chancenbewusstsein']),
+      C: score(['strategische_klarheit','roi','daten_compliance','governance','lernarchitektur']),
+    };
+  }, [answers, step, mode, CTX_END_STEP]);
+
+  return h('div', { className: 'shell' },
+    h(Brand, { modeLabel: mode === 'deep' ? 'Deep-Check · 12-15 Min' : mode === 'quick' ? 'Quick-Check · 3 Min' : 'KI-Team-Audit' }),
+    step > 0 && step < RESULTS_STEP && h(ProgressBar, { step, totalSteps: TOTAL_STEPS }),
+
+    /* ================= STEP 0 — WELCOME + MODE CHOICE ================= */
+    step === 0 && h('div', { className: 'fade-in' },
+      h('h1', { className: 'hero-text' },
+        'Wie steht es um die ',
+        h('em', null, 'KI-Reife'),
+        ' Ihres Teams?'
+      ),
+      h('p', { className: 'hero-sub' },
+        'Ein Self-Assessment für Führungskräfte im deutschen Mittelstand. Wählen Sie Ihren Einstieg:'
+      ),
+      h('div', { className: 'variant-grid', style: { marginTop: 32 } },
+        h('button', { className: 'variant-card', onClick: () => { setMode('quick'); setStep(1); } },
+          h('div', { className: 'kicker' }, 'Quick-Check · 3 Minuten'),
+          h('h3', null, 'Der Mindset-Puls'),
+          h('p', null, '12 Fragen zu Sinnverlust, Kompetenzangst, Führungsvakuum und Tempo-Stress. Anonym, ohne E-Mail, mit sofortiger SHIFT-Verortung.')
+        ),
+        h('button', { className: 'variant-card', onClick: () => { setMode('deep'); setStep(1); } },
+          h('div', { className: 'kicker' }, 'Deep-Check · 12-15 Minuten'),
+          h('h3', null, 'Der vollständige Check'),
+          h('p', null, '36 Fragen — Mindset-Risiken, -Ressourcen und Business & Struktur (Strategie, ROI, EU AI Act, Governance, Lernarchitektur). Inkl. Roadmap.')
+        )
+      ),
+      h('div', { className: 'hero-meta', style: { marginTop: 32 } },
+        h('span', null, h('strong', null, 'Wissenschaftlich hergeleitet'), ' · UWES, JD-R, Technostress, Edmondson, EU AI Act'),
+        h('span', null, h('strong', null, 'SHIFT-Verortung'), ' inklusive'),
+        h('span', null, h('strong', null, 'Konkrete Empfehlungen'), ' für Ihre Phase')
+      )
+    ),
+
+    /* ================= STEP 1 — C1 ================= */
+    step === 1 && h('div', { className: 'card' },
+      h('div', { className: 'kicker' }, mode === 'deep' ? 'Einstieg · Deep-Check' : 'Einstieg · Quick-Check'),
+      h(SingleChoice, {
+        question: CONTEXT_Q.C1.label,
+        options: CONTEXT_Q.C1.options,
+        value: answers.C1,
+        onChange: (v) => update('C1', v),
+      }),
+      h('div', { className: 'actions' },
+        h('button', { className: 'btn btn-ghost', onClick: () => { setMode(null); setStep(0); } }, '← Zurück'),
+        h('button', { className: 'btn btn-primary', disabled: !canProceed, onClick: () => setStep(2) }, 'Weiter', h('span', null, '→'))
+      )
+    ),
+
+    /* ================= LIKERT STEPS (generic) ================= */
+    step >= LIKERT_START && step < CTX_END_STEP && h('div', { className: 'card' },
+      h('div', { className: 'kicker' },
+        `Dimension ${step - LIKERT_START + 1} von ${numDimSteps}`,
+        activeDims[step - LIKERT_START].block && mode === 'deep' ?
+          ` · Block ${activeDims[step - LIKERT_START].block} ${activeDims[step - LIKERT_START].block === 'A' ? '(Risiken)' : activeDims[step - LIKERT_START].block === 'B' ? '(Ressourcen)' : '(Struktur)'}` : ''
+      ),
+      h(LikertBlock, {
+        dimension: activeDims[step - LIKERT_START],
+        values: answers,
+        onChange: update,
+      }),
+      h('div', { className: 'actions' },
+        h('button', { className: 'btn btn-ghost', onClick: () => setStep(step - 1) }, '← Zurück'),
+        h('button', { className: 'btn btn-primary', disabled: !canProceed, onClick: () => setStep(step + 1) }, 'Weiter', h('span', null, '→'))
+      )
+    ),
+
+    /* ================= CTX_END — C2, C3, C4 ================= */
+    step === CTX_END_STEP && h('div', { className: 'card' },
+      h('div', { className: 'kicker' }, 'Kontext-Abschluss · 3 kurze Klicks'),
+      h('div', { className: 'question' }, 'Damit wir Ihre Empfehlungen auf Ihre Situation abstimmen'),
+      h(SingleChoice, { question: CONTEXT_Q.C2.label, options: CONTEXT_Q.C2.options, value: answers.C2, onChange: v => update('C2', v) }),
+      h('div', { style: { marginTop: 24 } }),
+      h(SingleChoice, { question: CONTEXT_Q.C3.label, options: CONTEXT_Q.C3.options, value: answers.C3, onChange: v => update('C3', v) }),
+      h('div', { style: { marginTop: 24 } }),
+      h(SingleChoice, { question: CONTEXT_Q.C4.label, options: CONTEXT_Q.C4.options, value: answers.C4, onChange: v => update('C4', v) }),
+      h('div', { className: 'actions' },
+        h('button', { className: 'btn btn-ghost', onClick: () => setStep(step - 1) }, '← Zurück'),
+        h('button', { className: 'btn btn-primary', disabled: !canProceed, onClick: () => setStep(step + 1) }, mode === 'deep' ? 'Weiter' : 'Zur Auswertung', h('span', null, '→'))
+      )
+    ),
+
+    /* ================= EMAIL STEP (Deep only) ================= */
+    step === EMAIL_STEP && mode === 'deep' && h('div', { className: 'card' },
+      h('div', { className: 'kicker' }, 'Ergebnis-Zugang'),
+      h('h2', null, 'Ihr Deep-Check-Report'),
+      h('p', { style: { marginTop: 12, marginBottom: 24, color: 'var(--stone-700)' } },
+        'Damit Sie Ihr ausführliches Ergebnis inkl. Impact/Effort-Matrix und 60/90-Tage-Roadmap auch später nachlesen können, schicken wir es Ihnen gern als PDF zu. Optional – Sie können das Ergebnis auch einfach hier ansehen.'
+      ),
+      h('input', {
+        type: 'email',
+        placeholder: 'ihre.email@unternehmen.de',
+        value: email === 'skip' ? '' : email,
+        onChange: e => setEmail(e.target.value),
+        style: {
+          width: '100%',
+          padding: '16px 20px',
+          fontSize: '1rem',
+          fontFamily: 'var(--ff-body)',
+          border: '1.5px solid var(--stone-100)',
+          borderRadius: 'var(--radius)',
+          marginBottom: 12,
+        }
+      }),
+      h('p', { style: { fontSize: '0.78rem', color: 'var(--stone-500)' } }, 'Keine Newsletter. Keine Weitergabe. Nur Ihr Report.'),
+      h('div', { className: 'actions' },
+        h('button', { className: 'btn btn-ghost', onClick: () => { setEmail('skip'); setStep(step + 1); } }, 'Ohne E-Mail fortfahren'),
+        h('button', { className: 'btn btn-primary', disabled: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), onClick: () => setStep(step + 1) }, 'Weiter', h('span', null, '→'))
+      )
+    ),
+
+    /* ================= VARIANT STEP ================= */
+    step === VARIANT_STEP && h('div', { className: 'card' },
+      h('div', { className: 'kicker' }, 'Fast geschafft'),
+      h('h2', null, 'Wofür möchten Sie das Ergebnis nutzen?'),
+      h('p', { style: { marginTop: 12, marginBottom: 32 } }, 'Sie können die Ansicht später jederzeit wechseln.'),
+      h('div', { className: 'variant-grid' },
+        h('button', { className: 'variant-card', onClick: () => { setVariant('self'); setStep(RESULTS_STEP); } },
+          h('div', { className: 'icon' }, '◐'),
+          h('h3', null, 'Für mich selbst'),
+          h('p', null, 'Diagnoseprofil, SHIFT-Verortung und priorisierte Handlungsempfehlungen mit konkreten Schritten.')
+        ),
+        h('button', { className: 'variant-card', onClick: () => { setVariant('prep'); setStep(RESULTS_STEP); } },
+          h('div', { className: 'icon' }, '◑'),
+          h('h3', null, 'Als Gesprächsvorbereitung'),
+          h('p', null, 'Gleiche Diagnose plus kuratierte Leitfragen für ein Gespräch mit Mindshift oder mit Ihrem Team.')
+        )
+      )
+    ),
+
+    /* ================= RESULTS ================= */
+    step === RESULTS_STEP && scores && phase && h('div', { className: 'fade-in' },
+
+      // SHIFT-Verortung (Hero)
+      h('div', { className: 'card', style: { paddingBottom: 20 } },
+        h('div', { className: 'kicker' }, 'Ihre SHIFT-Verortung'),
+        h('h2', null, SHIFT_PHASES[phase].label),
+        h('p', { style: { marginTop: 10 } }, SHIFT_PHASES[phase].narrative),
+        h(ShiftTrack, { current: phase }),
+        SHIFT_PHASES[phase].nextBreakpoint && h('div', { className: 'breakpoint-callout' },
+          h('div', { className: 'kicker' }, 'Nächste Bruchstelle'),
+          h('h3', null, `${SHIFT_PHASES[phase].shortLabel} → ${SHIFT_PHASES[SHIFT_PHASES[phase].nextBreakpoint].shortLabel}`),
+          h('p', null, `Der nächste Schritt: ${SHIFT_PHASES[SHIFT_PHASES[phase].nextBreakpoint].summary}`)
+        )
+      ),
+
+      // Block-Profile (nur Deep-Check)
+      mode === 'deep' && blockScores && h('div', { className: 'card', style: { marginTop: 24 } },
+        h('div', { className: 'kicker' }, 'Die drei Block-Profile'),
+        h('h2', null, 'Mindset, Ressourcen, Struktur auf einen Blick'),
+        h('p', { style: { marginTop: 10, color: 'var(--stone-700)' } },
+          'Ihr Deep-Check liefert drei separate Profile. Niedrige Werte = günstig. Bei Block B bedeutet niedrig: Ressourcen sind vorhanden.'
+        ),
+        h('div', { style: { marginTop: 20 } },
+          h(DimBar, { label: 'A · Mindset-Risiken',    score: blockScores.A, zoneCls: zone(blockScores.A) }),
+          h(DimBar, { label: 'B · Mindset-Ressourcen', score: blockScores.B, zoneCls: zone(blockScores.B) }),
+          h(DimBar, { label: 'C · Business & Struktur', score: blockScores.C, zoneCls: zone(blockScores.C) })
+        )
+      ),
+
+      // Diagnoseprofil
+      h('div', { className: 'card', style: { marginTop: 24 } },
+        h('div', { className: 'kicker' }, 'Diagnoseprofil'),
+        h('h2', null, mode === 'deep' ? 'Alle Dimensionen im Detail' : 'Die 4 Dimensionen im Überblick'),
+        h('div', { style: { marginTop: 20 } },
+          ...activeDims.map(d => h(DimBar, { key: d.id, label: d.label, score: scores[d.id], zoneCls: zone(scores[d.id]) })),
+          h('div', { style: { marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--stone-100)' } },
+            h(DimBar, { label: 'Gesamtrisiko (Block A)', score: scores.gesamt, zoneCls: zone(scores.gesamt) })
+          )
+        ),
+        h('div', { style: { marginTop: 20, color: 'var(--stone-700)', fontSize: '0.95rem' } },
+          h('strong', { style: { color: 'var(--navy)' } }, `Ihr primärer Hebel: ${DIMENSIONS.find(d => d.id === bp).label} (${scores[bp]})`),
+          '. Die anderen Dimensionen ergeben oft Sinn, wenn dieser Hebel zuerst bewegt wird.'
+        )
+      ),
+
+      // Kontext-Einordnung
+      h('div', { className: 'card', style: { marginTop: 24, background: 'var(--cream)' } },
+        h('div', { className: 'kicker' }, 'Kontext'),
+        h('h3', null, 'Was Ihre Kontextantworten über den Score erzählen'),
+        h('p', { style: { marginTop: 10 } },
+          `Einsatztiefe: ${CONTEXT_Q.C1.options.find(o => o.value === ctx.C1).label.split('–')[0].trim()} · `,
+          `Ziel: ${CONTEXT_Q.C2.options.find(o => o.value === ctx.C2).label.split('–')[0].trim()} · `,
+          `Regelung: ${CONTEXT_Q.C3.options.find(o => o.value === ctx.C3).label.split('–')[0].trim()} · `,
+          `Befähigung: ${CONTEXT_Q.C4.options.find(o => o.value === ctx.C4).label.split('–')[0].trim()}`
+        ),
+        recs.overrides.length > 0 && h('div', { style: { marginTop: 16 } },
+          recs.overrides.map((o, i) => h('div', { key: i, style: {
+            background: o.type === 'flag' ? 'var(--red-soft)' : 'var(--navy)',
+            color: 'var(--white)',
+            padding: '14px 18px',
+            borderRadius: '10px',
+            marginTop: 8,
+            fontSize: '0.92rem',
+            lineHeight: 1.5,
+          } }, o.text))
+        )
+      ),
+
+      // Empfehlungen
+      h('div', { className: 'section-title' }, '3 priorisierte Handlungsempfehlungen'),
+      h('p', { style: { marginTop: -8, marginBottom: 20, color: 'var(--stone-700)', fontSize: '0.95rem', maxWidth: 720 } },
+        'Die folgenden Maßnahmen beschreiben, ',
+        h('strong', null, 'was zu tun wäre'),
+        '. Ob sie greifen, hängt nicht an der Maßnahme selbst, sondern daran, wer sie im Unternehmen führt.'
+      ),
+      recs.ids.map((id, i) => h(Recommendation, {
+        key: id,
+        ivId: id,
+        number: i + 1,
+        isPrimary: i === 0,
+        why: i === 0 ? `Warum Priorität 1: Passt zu Ihrer SHIFT-Phase ${SHIFT_PHASES[phase].shortLabel} und adressiert Ihren Barrier Point (${DIMENSIONS.find(d => d.id === bp).label}).` : null,
+      })),
+
+      // Peer-Benchmark (Placeholder - wird mit echten Daten ersetzt)
+      h('div', { className: 'card', style: { marginTop: 24, background: 'var(--off-white)' } },
+        h('div', { className: 'kicker' }, 'Im Vergleich mit anderen Teams'),
+        h('h3', { style: { fontSize: '1.1rem', marginBottom: 12 } }, 'Wie Sie sich einordnen'),
+        h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 24, marginTop: 16 } },
+          h('div', { style: { flex: '1 1 220px' } },
+            h('div', { style: { fontSize: '2rem', fontFamily: 'var(--ff-display)', color: 'var(--navy)', fontWeight: 700 } },
+              scores.gesamt > 66 ? 'oberes Drittel' : scores.gesamt > 33 ? 'mittleres Drittel' : 'unteres Drittel'
+            ),
+            h('div', { style: { fontSize: '0.88rem', color: 'var(--stone-500)', marginTop: 4 } }, 'der gemessenen Risikowerte')
+          ),
+          h('div', { style: { flex: '1 1 220px' } },
+            h('div', { style: { fontSize: '2rem', fontFamily: 'var(--ff-display)', color: 'var(--navy)', fontWeight: 700 } },
+              scores.kompetenzangst > 66 ? '~62%' : scores.kompetenzangst > 33 ? '~48%' : '~22%'
+            ),
+            h('div', { style: { fontSize: '0.88rem', color: 'var(--stone-500)', marginTop: 4 } }, 'mittelständischer Teams zeigen ähnliche Kompetenzangst-Signale')
+          )
+        ),
+        h('p', { style: { fontSize: '0.82rem', color: 'var(--stone-500)', marginTop: 16, fontStyle: 'italic' } }, 'Indikative Richtwerte — werden mit wachsender Audit-Basis präziser. Grundlage: Bitkom KI-Studien 2024-25, Fraunhofer IAO, erste Mindshift-Pilotdaten.')
+      ),
+
+      // Variante A: Reflexion (Zeitplan ist jetzt in Priorität 1 integriert)
+      variant === 'self' && h(React.Fragment, null,
+        h('div', { className: 'reflection' },
+          h('div', { className: 'kicker' }, 'Ein Gedanke zum Weiterdenken'),
+          h('p', null,
+            phase === 'HUMAN'    ? '„Wenn Ihr Team Sie jetzt fragen würde: Werden wir durch KI wertvoller oder überflüssiger? – wie antworten Sie? Und wie stimmt diese Antwort mit Ihren letzten drei Entscheidungen überein?"' :
+            phase === 'IGNITE'   ? '„Wann haben Sie zuletzt einen Mitarbeitenden erlebt, der durch KI sichtbar begeistert war – und was hatten Sie konkret dazu beigetragen?"' :
+            phase === 'FRAME'    ? '„Wenn Sie morgen ein KI-Tool in Ihrem Team abschalten müssten – welches wäre es, und warum trauen Sie sich das heute nicht?"' :
+            phase === 'SENSE'    ? '„Was wissen Sie über den KI-Stand Ihres Teams aus eigener Beobachtung – und was nur aus Berichten anderer?"' :
+            phase === 'VOR_SENSE'? '„Was ist der konkrete Auslöser, warum Sie gerade jetzt diesen Audit gemacht haben – und was sagt das über Ihren nächsten Schritt?"' :
+            '„Welche Form der Herausforderung brauchen Sie und Ihr Team jetzt noch, um weiter zu lernen – oder werden Sie bequem?"'
+          )
+        )
+      ),
+
+      // Variante B: Leitfragen
+      variant === 'prep' && h(React.Fragment, null,
+        h('div', { className: 'section-title' }, 'Leitfragen für Ihr Gespräch'),
+        h(LeitfragenBlock, { phase, audience: 'mindshift' }),
+        h(LeitfragenBlock, { phase, audience: 'team' })
+      ),
+
+      // Führungs-Framing (Brücke zum CTA)
+      h('div', { className: 'card', style: { marginTop: 32, background: 'var(--cream)', borderLeft: '4px solid var(--gold)' } },
+        h('div', { className: 'kicker' }, 'Was Ihr Ergebnis wirklich zeigt'),
+        h('h3', { style: { marginBottom: 12 } }, 'Das ist kein Umsetzungsproblem. Das ist ein Führungsproblem im KI-Zeitalter.'),
+        h('p', { style: { marginBottom: 12 } },
+          'Die Tools sind verfügbar. Die Maßnahmen sind bekannt. Was fehlt, ist nicht Wissen — sondern jemand, der den Wandel im Führungsalltag tatsächlich orchestriert: zwischen Geschäftsführung, Fachbereichen, IT und Mitbestimmung.'
+        ),
+        h('p', { style: { marginBottom: 0, fontStyle: 'italic', color: 'var(--navy)' } },
+          'Genau an diesem Punkt kommen Geschäftsführer auf mich zu.'
+        )
+      ),
+
+      // CTA: Reality Check (geschärft)
+      h('div', { className: 'cta-box', style: { marginTop: 24 } },
+        h('div', { className: 'kicker' }, '30-Minuten Reality Check'),
+        h('h3', null, 'Für Geschäftsführer, die wissen wollen, wo sie wirklich stehen.'),
+        h('p', { style: { marginBottom: 16 } },
+          'Dreißig Minuten mit Dirk Brusch — Interim KI-Transformations-Manager. Drei Dinge: Einordnung Ihres Ergebnisses, ehrlicher Spiegel Ihrer Situation, klarer nächster Schritt.'
+        ),
+        h('p', { style: { marginBottom: 24, fontSize: '0.92rem', color: 'rgba(255,255,255,0.7)' } },
+          'Kein Vertrieb. Keine Pakete. Wenn wir nicht zusammenpassen, bekommen Sie eine Empfehlung, wer besser passt.'
+        ),
+        h('button', { className: 'btn btn-gold', onClick: () => alert('Terminbuchung — in der finalen Version verbunden mit Cal.com') }, 'Reality Check vereinbaren', h('span', null, '→')),
+        h('div', { className: 'cta-note' }, 'Aktuell 4 Slots im Kalender von Dirk Brusch · Nur für Geschäftsführer und Bereichsleiter mit Ergebnisverantwortung.')
+      ),
+
+      h('div', { className: 'actions', style: { marginTop: 40 } },
+        h('button', { className: 'btn btn-ghost', onClick: () => {
+          setVariant(variant === 'self' ? 'prep' : 'self');
+        } }, variant === 'self' ? '→ Zur Gesprächsvorbereitung wechseln' : '→ Zur Selbstausfüll-Ansicht wechseln'),
+        h('button', { className: 'btn btn-ghost', onClick: () => { setStep(0); setAnswers({}); setVariant(null); setMode(null); setEmail(''); } }, 'Audit neu starten')
+      ),
+
+      // Methodik — Wie dieser Audit entstand
+      h('div', { style: { marginTop: 48, padding: '32px 28px', background: 'var(--navy)', color: 'var(--white)', borderRadius: 'var(--radius-lg)' } },
+        h('div', { className: 'kicker', style: { color: 'var(--gold-light)', marginBottom: 12 } }, 'Wie dieser Audit entstand'),
+        h('h3', { style: { color: 'var(--white)', marginBottom: 16 } }, 'Nicht aus dem Bauch — aus der Literatur'),
+        h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 20, marginBottom: 20 } },
+          [
+            [mode === 'deep' ? '12' : '4', 'Dimensionen'],
+            [mode === 'deep' ? '36' : '12', 'Likert-Items'],
+            [mode === 'deep' ? '40+' : '16+', 'Handlungsempfehlungen'],
+            ['50+', 'wissenschaftliche Quellen'],
+          ].map(([n, l], i) => h('div', { key: i },
+            h('div', { style: { fontSize: '2.2rem', fontFamily: 'var(--ff-display)', fontWeight: 700, color: 'var(--gold)', lineHeight: 1 } }, n),
+            h('div', { style: { fontSize: '0.82rem', color: 'rgba(255,255,255,0.72)', marginTop: 6 } }, l)
+          ))
+        ),
+        h('p', { style: { fontSize: '0.88rem', color: 'rgba(255,255,255,0.82)', lineHeight: 1.6, marginBottom: 16 } },
+          'Jedes Item ist auf einer validierten wissenschaftlichen Skala aufgebaut. Die Empfehlungen sind aus 8 Deep-Research-Reports zu Arbeitspsychologie, Technostress, Psychologischer Sicherheit, Change Management, Digital Leadership, Business-Adoption und EU AI Act extrahiert. Der deutsche Mittelstandskontext (CYA-Logik, Mitbestimmung, Sozialpartnerschaft) ist explizit integriert.'
+        ),
+        h('details', { style: { color: 'rgba(255,255,255,0.72)', fontSize: '0.82rem' } },
+          h('summary', { style: { cursor: 'pointer', color: 'var(--gold-light)' } }, 'Quellen im Detail'),
+          h('p', { style: { marginTop: 12, lineHeight: 1.7 } },
+            'Schaufeli (UWES) · Bakker/Demerouti (JD-R) · Tarafdar (Technostress) · Maier/Weitzel (Bamberg) · Gimpel (Fraunhofer FIT) · Edmondson (Fearless Organization) · Clark (4 Stages of Psychological Safety) · Dweck (Mindset) · Bandura (Self-Efficacy) · Gigerenzer (Risk Literacy) · Welpe (Digital Leadership Scale TUM) · Gratton (Redesigning Work) · Hofert (New Work) · Rafferty/Jimmieson/Armenakis (Change Readiness) · Holt (ROCS) · Prosci (ADKAR) · Brynjolfsson (Stanford Digital Economy Lab) · Mollick (Wharton · Co-Intelligence) · Grant (Task Significance) · Klotz (Great Resignation) · Bischoff (Mindshift-Praxis) · Hampel (Fehlerkultur deutscher Mittelstand) · EU AI Act · DSGVO · ISO 42001 · BetrVG · McKinsey/BCG/Gartner/MIT (AI Adoption Research).'
+          )
+        )
+      ),
+
+      h('div', { className: 'footer-meta' },
+        `Mindshift AI · KI-Team-Audit · Prototyp v0.2 · Modus: ${mode === 'deep' ? 'Deep-Check' : 'Quick-Check'}`
+      )
+    )
+  );
+}
+
+createRoot(document.getElementById('root')).render(h(App));
+</script>
+</body>
+</html>

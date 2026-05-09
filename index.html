@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KI-Reife-Analyse · Mindshift AI Consultants</title>
+<meta name="description" content="Wo steht Ihr Team wirklich im KI-Wandel? Ein 3-Minuten-Self-Assessment für Geschäftsführer und Führungskräfte. Aus 50+ wissenschaftlichen Quellen und 1.000 Engine-Simulationen verdichtet." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C1A355;
+    --gold-light: #D4BC7B;
+    --gold-pale: #EDE3C8;
+    --gold-dark: #9E8440;
+    --gold-glow: rgba(193,163,85,.18);
+    --navy: #0A1628;
+    --navy-mid: #132035;
+    --navy-light: #1B2D47;
+    --slate: #1A3A5C;
+    --white: #FFFFFF;
+    --off-white: #F9F8F5;
+    --cream: #F4F0E7;
+    --stone-50: #EDEAE3;
+    --stone-100: #DEDAD0;
+    --stone-300: #B0AA9D;
+    --stone-500: #7A756A;
+    --stone-700: #4A463D;
+    --ink: #1E1C18;
+    --ff-display: 'Playfair Display', Georgia, serif;
+    --ff-body: 'Inter', -apple-system, sans-serif;
+    --ease: cubic-bezier(.4,0,.2,1);
+    --ease-spring: cubic-bezier(.34,1.56,.64,1);
+    --shadow-s: 0 2px 8px rgba(10,22,40,.05);
+    --shadow-m: 0 8px 32px rgba(10,22,40,.08);
+    --shadow-l: 0 24px 64px rgba(10,22,40,.12);
+    --shadow-gold: 0 8px 32px rgba(193,163,85,.22);
+    --radius: 14px;
+    --radius-lg: 22px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
+  body {
+    font-family: var(--ff-body);
+    background: var(--off-white);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 700; color: var(--navy); line-height: 1.15; margin: 0; letter-spacing: -0.01em; }
+  h1 { font-size: clamp(2.4rem, 5.5vw, 4.5rem); }
+  h2 { font-size: clamp(1.9rem, 3.8vw, 3rem); }
+  h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
+  p { margin: 0; color: var(--stone-700); }
+  .gold-em { font-style: italic; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
+  a { color: inherit; text-decoration: none; }
+  button, .btn { font-family: var(--ff-body); cursor: pointer; border: none; }
+
+  /* Grain Overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .container {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  @media (max-width: 640px) { .container { padding: 0 20px; } }
+
+  /* Nav */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+    background: rgba(249, 248, 245, 0.88);
+    border-bottom: 1px solid var(--stone-100);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    max-width: 1160px;
+    margin: 0 auto;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--navy);
+  }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 3px var(--gold-glow); }
+  .nav-cta {
+    padding: 10px 22px;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 100px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: all .3s var(--ease);
+  }
+  .nav-cta:hover { background: var(--navy-light); transform: translateY(-1px); box-shadow: var(--shadow-m); }
+  @media (max-width: 640px) { .nav-cta { display: none; } }
+
+  /* Hero */
+  .hero {
+    padding: 96px 0 128px;
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, var(--gold-glow), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-kicker {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-kicker::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--gold);
+  }
+  .hero h1 {
+    margin-bottom: 28px;
+    max-width: 920px;
+  }
+  .hero-sub {
+    font-size: clamp(1.1rem, 1.6vw, 1.25rem);
+    color: var(--stone-700);
+    max-width: 680px;
+    margin-bottom: 48px;
+    line-height: 1.55;
+  }
+  .hero-cta-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 32px;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all .3s var(--ease);
+    box-shadow: var(--shadow-m);
+  }
+  .btn-primary:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: var(--shadow-l); }
+  .btn-primary .arrow { transition: transform .3s var(--ease); }
+  .btn-primary:hover .arrow { transform: translateX(4px); }
+  .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 32px;
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all .3s var(--ease);
+  }
+  .btn-gold:hover { background: var(--gold-light); box-shadow: var(--shadow-gold); transform: translateY(-2px); }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 24px;
+    color: var(--stone-700);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color .2s var(--ease);
+  }
+  .btn-ghost:hover { color: var(--navy); }
+
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    margin-top: 72px;
+    padding-top: 32px;
+    border-top: 1px solid var(--stone-100);
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hero-meta-num {
+    font-family: var(--ff-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .hero-meta-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--stone-500);
+  }
+
+  /* Section */
+  section { padding: 120px 0; }
+  @media (max-width: 768px) { section { padding: 80px 0; } }
+  .section-navy {
+    background: linear-gradient(165deg, var(--navy) 0%, var(--navy-mid) 60%, var(--navy-light) 100%);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .section-navy::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 64px;
+    background: linear-gradient(to bottom, transparent, var(--gold));
+  }
+  .section-navy h2, .section-navy h3 { color: var(--white); }
+  .section-navy p { color: rgba(255,255,255,0.78); }
+  .section-cream { background: var(--cream); }
+
+  .eyebrow {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--gold);
+  }
+  .section-navy .eyebrow { color: var(--gold-light); }
+
+  .section-head { max-width: 800px; margin-bottom: 64px; }
+  .section-head p { font-size: 1.15rem; margin-top: 24px; line-height: 1.6; }
+
+  /* Problem Section */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .problem-grid { grid-template-columns: 1fr; gap: 48px; } }
+  .problem-stat {
+    font-family: var(--ff-display);
+    font-size: clamp(4rem, 8vw, 6.5rem);
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    font-style: italic;
+  }
+  .problem-stat-label {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+  .problem-text {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .problem-text em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  /* What you get */
+  .get-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  @media (max-width: 900px) { .get-grid { grid-template-columns: 1fr; } }
+  .get-card {
+    background: var(--white);
+    border: 1px solid var(--stone-100);
+    border-radius: var(--radius-lg);
+    padding: 40px 36px;
+    transition: all .4s var(--ease);
+  }
+  .get-card:hover { border-color: var(--gold-pale); box-shadow: var(--shadow-m); transform: translateY(-4px); }
+  .get-card-num {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: 2.5rem;
+    color: var(--gold-dark);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+  .get-card h3 { margin-bottom: 16px; }
+  .get-card p { font-size: 0.98rem; line-height: 1.6; }
+
+  /* Methodology */
+  .method-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-bottom: 72px;
+  }
+  @media (max-width: 900px) { .method-stats { grid-template-columns: repeat(2, 1fr); gap: 24px; } }
+  .method-stat {
+    text-align: left;
+    padding-left: 24px;
+    border-left: 1px solid var(--gold);
+  }
+  .method-stat-num {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 3.5vw, 3rem);
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .method-stat-label {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+  .sources-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+  .sources {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: rgba(255,255,255,0.72);
+  }
+  .sources b { color: var(--white); font-weight: 500; }
+
+  /* Dirk Section */
+  .dirk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+  }
+  @media (max-width: 900px) { .dirk-grid { grid-template-columns: 1fr; gap: 48px; } }
+  .dirk-portrait {
+    aspect-ratio: 4 / 5;
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-l);
+  }
+  .dirk-portrait::after {
+    content: 'DB';
+    font-family: var(--ff-display);
+    font-size: 8rem;
+    font-weight: 700;
+    color: var(--gold);
+    opacity: 0.3;
+    font-style: italic;
+  }
+  .dirk-portrait .badge {
+    position: absolute;
+    bottom: 24px; left: 24px;
+    padding: 10px 18px;
+    background: rgba(10,22,40,0.7);
+    backdrop-filter: blur(6px);
+    color: var(--gold-light);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .dirk-text h2 { margin-bottom: 24px; }
+  .dirk-text p { font-size: 1.08rem; line-height: 1.6; margin-bottom: 20px; color: var(--stone-700); }
+  .dirk-tagline {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--navy);
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--stone-100);
+    line-height: 1.4;
+  }
+  .dirk-tagline .accent { color: var(--gold-dark); }
+  .dirk-credentials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .dirk-cred {
+    padding: 8px 14px;
+    background: var(--cream);
+    border: 1px solid var(--gold-pale);
+    border-radius: 100px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--stone-700);
+  }
+
+  /* Invitation */
+  .invitation {
+    padding: 140px 0;
+    background: linear-gradient(165deg, var(--navy) 0%, var(--slate) 100%);
+    color: var(--white);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .invitation::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, var(--gold-glow), transparent 60%);
+    pointer-events: none;
+  }
+  .invitation > .container { position: relative; }
+  .invitation h2 {
+    color: var(--white);
+    margin-bottom: 32px;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+  }
+  .invitation h2 em { color: var(--gold); font-style: italic; }
+  .invitation-body {
+    max-width: 640px;
+    margin: 0 auto 48px;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.82);
+  }
+  .invitation-note {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 32px;
+    font-style: italic;
+  }
+  .scarcity-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(193,163,85,0.12);
+    border: 1px solid rgba(193,163,85,0.3);
+    border-radius: 100px;
+    font-size: 0.82rem;
+    color: var(--gold-light);
+    margin-bottom: 48px;
+    font-weight: 500;
+  }
+  .scarcity-pill::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* FAQ */
+  .faq {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--stone-100);
+    padding: 28px 0;
+  }
+  .faq-item summary {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--navy);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: '+';
+    font-size: 1.6rem;
+    color: var(--gold-dark);
+    transition: transform .3s var(--ease);
+    font-family: var(--ff-body);
+    font-weight: 300;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-answer {
+    padding-top: 20px;
+    color: var(--stone-700);
+    font-size: 1.02rem;
+    line-height: 1.7;
+  }
+
+  /* Footer */
+  .footer {
+    background: var(--navy);
+    color: var(--white);
+    padding: 80px 0 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 64px;
+  }
+  @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; gap: 32px; } }
+  .footer-brand p {
+    color: rgba(255,255,255,0.6);
+    margin-top: 16px;
+    font-size: 0.92rem;
+    max-width: 380px;
+    line-height: 1.6;
+  }
+  .footer-col-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .footer-col a {
+    display: block;
+    color: rgba(255,255,255,0.72);
+    font-size: 0.92rem;
+    padding: 6px 0;
+    transition: color .2s var(--ease);
+  }
+  .footer-col a:hover { color: var(--gold-light); }
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    flex-wrap: wrap;
+  }
+
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <span class="dot"></span>
+      <span>Mindshift AI</span>
+    </a>
+    <a href="check.html" class="nav-cta">Quick-Check starten</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-kicker">KI-Team-Audit für den deutschen Mittelstand</div>
+    <h1>Wo steht Ihr Team<br /><span class="gold-em">wirklich</span> im KI-Wandel?</h1>
+    <p class="hero-sub">
+      Ein 3-Minuten-Self-Assessment für Geschäftsführer und Führungskräfte. Aus 50+ wissenschaftlichen Quellen und 1.000 Engine-Simulationen verdichtet. Sie bekommen in 3 Minuten Ihre Verortung im SHIFT-Modell, den Punkt, an dem Ihre Transformation am stärksten blockiert ist — und drei konkrete Handlungsempfehlungen mit Zeithorizonten.
+    </p>
+    <div class="hero-cta-row">
+      <a href="check.html" class="btn-primary">
+        Quick-Check starten
+        <span class="arrow">→</span>
+      </a>
+      <a href="#methodik" class="btn-ghost">
+        Wie die Analyse aufgebaut ist
+      </a>
+    </div>
+
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-num">12</div>
+        <div class="hero-meta-label">Fragen</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-num">3 Min</div>
+        <div class="hero-meta-label">Dauer</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-num">50+</div>
+        <div class="hero-meta-label">Quellen</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-num">Anonym</div>
+        <div class="hero-meta-label">Ohne E-Mail</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Problem Section -->
+<section class="section-navy">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="reveal">
+        <div class="problem-stat">80%</div>
+        <div class="problem-stat-label">aller KI-Transformationen scheitern</div>
+      </div>
+      <div class="reveal">
+        <div class="eyebrow">Das stille Problem</div>
+        <h2>An der Technik liegt es selten.</h2>
+        <p class="problem-text">
+          KI-Transformationen scheitern, weil die <em>Menschen</em> nicht mitziehen. Angst vor Ersetzung. Stille Verweigerung. Ein Führungsvakuum, das niemand anspricht. Und ein Tempo, das ehrlich niemand mithalten kann.
+        </p>
+        <p class="problem-text">
+          Die Technik ist dabei der einfache Teil. Der schwierige Teil ist, dieses stille Problem sichtbar zu machen — <em>bevor</em> die besten Leute innerlich gekündigt haben.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- What you get -->
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Was Sie in 3 Minuten bekommen</div>
+      <h2>Keine Ampel. Eine <span class="gold-em">Verortung</span>.</h2>
+      <p>Sie erhalten einen Diagnostik-Snapshot — nicht als Ergebnis einer Umfrage, sondern als Verortung in einem strukturierten Transformationsmodell. Mit konkreten Handlungsempfehlungen, die Sie morgen umsetzen können.</p>
+    </div>
+
+    <div class="get-grid">
+      <div class="get-card reveal">
+        <div class="get-card-num">i</div>
+        <h3>Ihre SHIFT-Phase</h3>
+        <p>Wo Ihr Team aktuell im KI-Transformationsprozess steht — zwischen Vor-SENSE, SENSE, HUMAN, IGNITE, FRAME und THRIVE. Mit Benennung der nächsten Bruchstelle.</p>
+      </div>
+      <div class="get-card reveal">
+        <div class="get-card-num">ii</div>
+        <h3>Ihr Barrier Point</h3>
+        <p>Die Dimension, die Ihre Transformation gerade am stärksten blockiert: Sinnverlust, Kompetenzangst, Führungsvakuum oder Tempo-Stress. Nicht im Allgemeinen, sondern bei Ihrem Team.</p>
+      </div>
+      <div class="get-card reveal">
+        <div class="get-card-num">iii</div>
+        <h3>3 Handlungsempfehlungen</h3>
+        <p>Jede mit konkreten Schritten für 7, 30 und 90 Tage. Plus typischer Stolperstein, der bei der Umsetzung aus Erfahrung zuerst kommt. Kein Beratersprech — umsetzbar durch Sie selbst.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Methodology -->
+<section class="section-navy" id="methodik">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Methodik</div>
+      <h2>Nicht aus dem Bauch.<br />Aus der <span style="color: var(--gold); font-style: italic;">Literatur</span>.</h2>
+      <p style="color: rgba(255,255,255,0.78);">Jedes der 12 Items ist auf einer validierten wissenschaftlichen Skala aufgebaut. Die Handlungsempfehlungen sind aus acht Deep-Research-Reports zu Arbeitspsychologie, Technostress, Psychologischer Sicherheit, Digital Leadership, Business-Adoption und EU AI Act destilliert — und für den deutschen Mittelstandskontext nachgeschärft.</p>
+    </div>
+
+    <div class="method-stats">
+      <div class="method-stat reveal">
+        <div class="method-stat-num">50+</div>
+        <div class="method-stat-label">Wissenschaftliche Quellen</div>
+      </div>
+      <div class="method-stat reveal">
+        <div class="method-stat-num">1.000</div>
+        <div class="method-stat-label">Engine-Simulationen</div>
+      </div>
+      <div class="method-stat reveal">
+        <div class="method-stat-num">41</div>
+        <div class="method-stat-label">Handlungsempfehlungen</div>
+      </div>
+      <div class="method-stat reveal">
+        <div class="method-stat-num">12</div>
+        <div class="method-stat-label">Diagnostische Dimensionen</div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="sources-label">Quellenbasis (Auszug)</div>
+      <div class="sources">
+        <b>Schaufeli</b> (UWES — Utrecht Work Engagement Scale) · <b>Bakker / Demerouti</b> (JD-R-Modell) · <b>Tarafdar</b> (Technostress Creators Scale) · <b>Maier / Weitzel</b> (Universität Bamberg — Technostress im deutschen Kontext) · <b>Gimpel</b> (Fraunhofer FIT — AI Literacy) · <b>Edmondson</b> (Fearless Organization — Psychologische Sicherheit) · <b>Clark</b> (4 Stages of Psychological Safety) · <b>Dweck</b> (Growth Mindset) · <b>Bandura</b> (Self-Efficacy) · <b>Welpe</b> (TUM — Digital Leadership Scale) · <b>Rafferty / Jimmieson / Armenakis</b> (Change Readiness) · <b>Holt</b> (Readiness for Organizational Change Scale) · <b>Prosci</b> (ADKAR-Methodik) · <b>Brynjolfsson</b> (Stanford Digital Economy Lab) · <b>Mollick</b> (Wharton — Co-Intelligence) · <b>Grant</b> (Task Significance) · <b>Hampel</b> (Fehlerkultur deutscher Mittelstand) · <b>EU AI Act</b> · <b>DSGVO</b> · <b>ISO 42001</b> · <b>BetrVG</b> · <b>McKinsey / BCG / Gartner / MIT</b> (AI Adoption Research).
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 64px; padding: 32px; background: rgba(193,163,85,0.08); border: 1px solid rgba(193,163,85,0.25); border-radius: var(--radius);">
+      <p style="color: rgba(255,255,255,0.9); font-size: 1.02rem; line-height: 1.7;">
+        <b style="color: var(--gold-light);">Ein Hinweis zur Tiefe:</b> Der Quick-Check ist ein bewusst reduzierter Ausschnitt. Die Vollanalyse umfasst 36 Fragen über 12 Dimensionen, ein persönliches Debrief und eine Transformationsroadmap. Die ersten drei Minuten — diese hier — sind frei zugänglich. Was danach kommt, besprechen wir im Gespräch.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Dirk -->
+<section class="section-cream">
+  <div class="container">
+    <div class="dirk-grid">
+      <div class="dirk-portrait reveal">
+        <div class="badge">Dirk Brusch</div>
+      </div>
+      <div class="dirk-text reveal">
+        <div class="eyebrow">Entwickelt von</div>
+        <h2>Zwei Experten<br />in <span class="gold-em">einer Person</span>.</h2>
+        <p>Der Mindshift-Begleiter, der auch die Technik beherrscht. Der KI-Implementierer, der auch den Menschen versteht. Das gibt es auf dem deutschen Markt praktisch nicht — Mindset-Coaches verstehen keine KI-Architektur, KI-Implementierer ignorieren den Menschen.</p>
+        <p>37 Jahre Berufserfahrung durch jede Tech-Revolution. 500+ Millionen EUR verantwortetes Beschaffungsvolumen. Eigene Arbeitsprozesse vollständig KI-automatisiert — mit 50+ KI-Tools in produktiven Umgebungen, nicht im Lab.</p>
+
+        <div class="dirk-credentials">
+          <div class="dirk-cred">37 Jahre Tech-Revolutionen</div>
+          <div class="dirk-cred">500 Mio. EUR Volumen</div>
+          <div class="dirk-cred">Agentic AI · n8n · Voice AI</div>
+          <div class="dirk-cred">Mindset + Umsetzung aus einer Hand</div>
+        </div>
+
+        <div class="dirk-tagline">
+          <span class="accent">Mindset first.</span><br />
+          Technology follows.<br />
+          <span class="accent">Results stay.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Invitation -->
+<section class="invitation">
+  <div class="container">
+    <div class="scarcity-pill reveal">Dirk Brusch führt diese Gespräche persönlich — aktuell 4 freie Slots</div>
+
+    <h2 class="reveal">Kein Vertrieb.<br />Kein Paket.<br /><em>Kein Preisschild.</em></h2>
+
+    <p class="invitation-body reveal">
+      Wenn der Quick-Check Sie nachdenklich macht, sprechen wir darüber. Dreißig Minuten. Persönlich. Kostenfrei — weil wir erst verstehen wollen, bevor wir einen Weg vorschlagen. Und wenn wir nicht zueinander passen, empfehlen wir Ihnen, wer besser passt.
+    </p>
+
+    <div class="reveal">
+      <a href="#" class="btn-gold">
+        Gespräch vereinbaren
+        <span>→</span>
+      </a>
+    </div>
+
+    <p class="invitation-note reveal">
+      Die Quick-Check-Ergebnisse sind Ihre. Bringen Sie sie mit ins Gespräch — oder nicht.
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container">
+    <div class="section-head reveal" style="margin: 0 auto 56px; text-align: center;">
+      <div class="eyebrow" style="justify-content: center;">Häufige Fragen</div>
+      <h2>Bevor Sie starten.</h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq-item reveal">
+        <summary>Für wen ist dieser Check gemacht?</summary>
+        <div class="faq-answer">
+          Für Geschäftsführer, C-Level und Führungskräfte in mittelständischen Unternehmen, die ehrlich wissen wollen, wo sie in ihrer KI-Transformation stehen — bevor sie die nächste Investition freigeben. Nicht für KI-Skeptiker, die Bestätigung suchen. Und nicht für Tech-Enthusiasten, die Validierung brauchen.
+        </div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Warum ist der Quick-Check frei zugänglich?</summary>
+        <div class="faq-answer">
+          Weil die Transformations-Logik zu verstehen keine Bezahlschranke verdient. Was wir tun, kostet — was wir wissen, geben wir gerne weiter. Wer danach tiefer gehen möchte, spricht mit uns. Und auch dieses Gespräch ist kostenfrei, weil wir erst verstehen wollen, bevor wir etwas vorschlagen.
+        </div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Was passiert nach dem Gespräch?</summary>
+        <div class="faq-answer">
+          Je nach Situation: gar nichts, ein kurzer Impuls, ein Workshop mit Ihrem Führungsteam, eine strukturierte Begleitung über mehrere Monate oder eine fokussierte Implementierung. Wir finden den richtigen Weg gemeinsam heraus — im Gespräch, mit Blick auf Ihr tatsächliches Problem, nicht aus einem Paket-Katalog.
+        </div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Ist meine Eingabe anonym?</summary>
+        <div class="faq-answer">
+          Ja. Der Quick-Check läuft vollständig in Ihrem Browser — keine Daten werden übermittelt, keine E-Mail nötig. Nur wenn Sie ein Gespräch vereinbaren, hinterlegen Sie uns freiwillig eine Kontaktmöglichkeit. Ihre Werte bleiben bei Ihnen.
+        </div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Was, wenn das Ergebnis mich nicht überrascht?</summary>
+        <div class="faq-answer">
+          Dann wissen Sie, dass Ihr Gefühl fundiert ist — nicht Ihre Phantasie. Das ist oft die wertvollere Erkenntnis als eine Überraschung. Wer die eigene Situation bestätigt bekommt, handelt entschlossener als wer zweifelt.
+        </div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Wie stark weicht die Vollanalyse ab?</summary>
+        <div class="faq-answer">
+          Der Quick-Check erfasst 4 psychologische Risiko-Dimensionen. Die Vollanalyse erfasst zusätzlich 2 Ressourcen-Dimensionen (Eigenverantwortung, Chancenbewusstsein) und 5 Business-Dimensionen (Strategische Klarheit, ROI, EU AI Act, Governance, Lernarchitektur). Sie liefert ein Impact/Effort-Profil Ihrer aktuellen Use Cases und eine 60/90-Tage-Roadmap. Der Quick-Check ist der Diagnose-Einstieg — die Vollanalyse der Entscheidungs-Begleiter.
+        </div>
+      </details>
+    </div>
+
+    <div class="reveal" style="text-align: center; margin-top: 80px;">
+      <a href="check.html" class="btn-primary">
+        Jetzt Quick-Check starten
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="dot"></span>
+          <span style="color: var(--white);">Mindshift AI Consultants</span>
+        </div>
+        <p>Die KI-Reife-Analyse für den deutschen Mittelstand. Entwickelt von Dirk Brusch — Mindshift-Begleitung und KI-Umsetzung aus einer Hand.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Analyse</div>
+        <a href="check.html">Quick-Check starten</a>
+        <a href="#methodik">Methodik</a>
+        <a href="#">Gespräch vereinbaren</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Mindshift</div>
+        <a href="https://mindshift-ai-consultants.de">Hauptseite</a>
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Mindshift AI Consultants · Dirk Brusch</div>
+      <div>Mindset first. Technology follows. Results stay.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
